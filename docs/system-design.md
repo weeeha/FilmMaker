@@ -1,4 +1,4 @@
-# Film Planner — System Design (v0.2)
+# Film Planner — Design System (v0.2)
 
 **Status:** v0.2 — vision + MVP scope
 **Stack:** Next.js 16 (App Router) + TypeScript + Tailwind v4 + shadcn/ui, AI SDK v6 via Vercel AI Gateway, Neon Postgres + Drizzle ORM, Vercel Blob, deployed on Vercel
