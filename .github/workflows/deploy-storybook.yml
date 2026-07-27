@@ -37,6 +37,8 @@ jobs:
         run: npm run build-storybook
         working-directory: design-system
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: design-system/storybook-static
