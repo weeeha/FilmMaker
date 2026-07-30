@@ -10,7 +10,19 @@ const meta = {
   argTypes: {
     type: {
       control: 'select',
-      options: ['video', 'image', 'audio', 'speech', 'text', 'link'],
+      options: [
+        'video',
+        'image',
+        'audio',
+        'speech',
+        'sound',
+        '3d',
+        'avatar',
+        'start-frame',
+        'end-frame',
+        'text',
+        'link',
+      ],
     },
   },
 } satisfies Meta<typeof NodePort>
@@ -30,6 +42,11 @@ export const AllTypes: Story = {
       <NodePort type="image" />
       <NodePort type="speech" />
       <NodePort type="audio" />
+      <NodePort type="sound" />
+      <NodePort type="3d" />
+      <NodePort type="avatar" />
+      <NodePort type="start-frame" />
+      <NodePort type="end-frame" />
       <NodePort type="text" />
       <NodePort type="link" />
     </div>
