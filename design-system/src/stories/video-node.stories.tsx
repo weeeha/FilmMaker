@@ -6,6 +6,7 @@ import {
   AINode,
   AINodeFooter,
   AINodeHeader,
+  AINodeMeta,
   AINodePorts,
   AINodePreview,
   AINodePrompt,
@@ -17,7 +18,7 @@ import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
 const meta = {
-  title: 'AI New/Node',
+  title: 'AI New/Node/Video',
   component: AINode,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -71,6 +72,7 @@ export const Default: Story = {
           <Video aria-hidden="true" />
           Video
         </AINodeTitle>
+        <AINodeMeta>Veo 3.1 Fast</AINodeMeta>
       </AINodeHeader>
       <AINodePreview>{emptyPreview}</AINodePreview>
       <AINodeFooter>
@@ -91,6 +93,7 @@ export const Selected: Story = {
           <Video aria-hidden="true" />
           Video
         </AINodeTitle>
+        <AINodeMeta>Veo 3.1 Fast</AINodeMeta>
       </AINodeHeader>
       <AINodePreview>{emptyPreview}</AINodePreview>
       <AINodeFooter>
@@ -111,6 +114,7 @@ export const TypingDescription: Story = {
           <Video aria-hidden="true" />
           Video
         </AINodeTitle>
+        <AINodeMeta>Veo 3.1 Fast</AINodeMeta>
       </AINodeHeader>
       <AINodePreview>{emptyPreview}</AINodePreview>
       <AINodeFooter>
@@ -137,6 +141,7 @@ export const Generating: Story = {
           <Video aria-hidden="true" />
           Video
         </AINodeTitle>
+        <AINodeMeta>Veo 3.1 Fast</AINodeMeta>
       </AINodeHeader>
       <AINodePreview>
         <Spinner className="size-6 text-neutral-400" />
@@ -164,6 +169,7 @@ export const Result: Story = {
           <Video aria-hidden="true" />
           Video
         </AINodeTitle>
+        <AINodeMeta>Veo 3.1 Fast</AINodeMeta>
       </AINodeHeader>
       <AINodePreview>
         {/* stand-in for the generated clip */}
@@ -196,6 +202,7 @@ export const Error: Story = {
           <Video aria-hidden="true" />
           Video
         </AINodeTitle>
+        <AINodeMeta>Veo 3.1 Fast</AINodeMeta>
       </AINodeHeader>
       <AINodePreview>
         <TriangleAlert aria-hidden="true" className="size-6 text-destructive" />
@@ -224,6 +231,7 @@ export const Disabled: Story = {
           <Video aria-hidden="true" />
           Video
         </AINodeTitle>
+        <AINodeMeta>Veo 3.1 Fast</AINodeMeta>
       </AINodeHeader>
       <AINodePreview>{emptyPreview}</AINodePreview>
       <AINodeFooter>
