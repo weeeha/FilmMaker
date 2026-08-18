@@ -1,0 +1,66 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './image-generation-node.stories'
+
+<Meta title="AI New/Node Cards/Image Generation/Documentation" />
+
+# Image Generation node
+
+The Image Generation node creates or edits images from a text prompt and,
+when supported by the selected model, visual references. Model-specific
+settings determine properties such as aspect ratio, resolution, and quality.
+The generated image can be passed to a compatible downstream node.
+
+_Adapted from ElevenLabs Image & Video to match the current implementation._
+
+## Anatomy
+
+Header with active model, image preview, prompt row with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `image` — centered on the preview
+- `text` — aligned with the prompt input
+
+**Outputs**
+
+- `image` — aligned with the preview top
+
+## Node menu
+
+- Model picker — GPT Image 2, FLUX 1.1, Seedream 4.0
+- Aspect Ratio (21:9 … 9:16), Resolution (512 … 4K), Quality (Low / Medium / High)
+- Download, Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.SelectedEmpty} />
+
+### Selected — Typing
+
+<Canvas of={Stories.SelectedTyping} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Generating — In Process
+
+<Canvas of={Stories.Generating} />
+
+### Generated
+
+<Canvas of={Stories.Generated} />
+
+### Generated — Error
+
+<Canvas of={Stories.GeneratedError} />

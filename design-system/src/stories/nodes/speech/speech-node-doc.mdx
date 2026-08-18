@@ -1,0 +1,64 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './speech-node.stories'
+
+<Meta title="AI New/Node Cards/Text to Speech/Documentation" />
+
+# Text to Speech node
+
+The Text to Speech node converts text into lifelike spoken audio using a
+selected voice and speech model. It interprets textual cues to shape
+intonation, pacing, and emotional delivery. The generated speech audio can be
+passed to a compatible downstream node.
+
+_Source: ElevenLabs Text to Speech._
+
+## Anatomy
+
+Header with active model, audio preview strip, voice row (voice picker + settings), text area with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `text` — aligned with the text area
+
+**Outputs**
+
+- `sound` — aligned with the preview strip
+
+## Node menu
+
+- Model — Eleven Multilingual v2
+- Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.SelectedEmpty} />
+
+### Selected — Typing
+
+<Canvas of={Stories.SelectedTyping} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Generating — In Process
+
+<Canvas of={Stories.Generating} />
+
+### Generated
+
+<Canvas of={Stories.Generated} />
+
+### Generated — Error
+
+<Canvas of={Stories.GeneratedError} />

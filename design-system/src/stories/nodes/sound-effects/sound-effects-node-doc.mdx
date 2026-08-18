@@ -1,0 +1,64 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './sound-effects-node.stories'
+
+<Meta title="AI New/Node Cards/Sound Effects/Documentation" />
+
+# Sound Effects node
+
+The Sound Effects node generates an audio effect from a text description. Its
+settings control the model and the duration of the generated effect. The node
+outputs an audio asset that can be passed to a compatible downstream node.
+
+_Adapted from ElevenLabs Sound Effects to match the current implementation._
+
+## Anatomy
+
+Header with active model, audio preview, prompt row with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `text` — aligned with the prompt input
+
+**Outputs**
+
+- `audio` — aligned with the preview top
+
+## Node menu
+
+- Model picker — Lyria 2, Eleven SFX
+- Duration (Auto, 1s … 22s)
+- Download, Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.SelectedEmpty} />
+
+### Selected — Typing
+
+<Canvas of={Stories.SelectedTyping} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Generating — In Process
+
+<Canvas of={Stories.Generating} />
+
+### Generated
+
+<Canvas of={Stories.Generated} />
+
+### Generated — Error
+
+<Canvas of={Stories.GeneratedError} />

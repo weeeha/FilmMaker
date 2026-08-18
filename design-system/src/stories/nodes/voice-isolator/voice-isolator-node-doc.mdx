@@ -1,0 +1,47 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './voice-isolator-node.stories'
+
+<Meta title="AI New/Node Cards/Voice Isolator/Documentation" />
+
+# Voice Isolator node
+
+The Voice Isolator node extracts speech from a connected audio input and
+removes background noise, music, and ambient sounds. It produces clean,
+studio-quality speech while preserving the spoken content. The cleaned audio
+can be passed to a compatible downstream node.
+
+_Adapted from ElevenLabs Voice Isolator to match the current implementation._
+
+## Anatomy
+
+Header, audio preview, disabled prompt row (no text input) with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `audio` — centered on the card, left edge
+
+**Outputs**
+
+- `audio` — aligned with the preview top
+
+## Node menu
+
+- Download, Delete, More actions (actions-only pill — the node is a processor with no settings)
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected
+
+<Canvas of={Stories.Selected} />
+
+### Generating
+
+<Canvas of={Stories.Generating} />

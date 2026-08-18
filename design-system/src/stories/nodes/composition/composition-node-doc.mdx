@@ -1,0 +1,53 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './composition-node.stories'
+
+<Meta title="AI New/Node Cards/Composition/Documentation" />
+
+# Composition node
+
+The Composition node provides a centralized preview where users can layer
+connected video and audio outputs. It combines video, speech, music, and
+sound effects so the complete result can be reviewed in one place. The node
+does not generate content on its own.
+
+_Source: ElevenCreative Flows._
+
+## Anatomy
+
+Header, large video preview with Run pinned bottom-right, timeline ruler, video and audio tracks with volume and mute, add-track row.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `video` — aligned with the video track row
+- `sound` — aligned with the audio track row
+
+**Outputs**
+
+- `video` — aligned with the preview top
+
+## Node menu
+
+- Download
+- Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected
+
+<Canvas of={Stories.Selected} />
+
+### Generating
+
+<Canvas of={Stories.Generating} />
+
+### With Clips
+
+<Canvas of={Stories.WithClips} />

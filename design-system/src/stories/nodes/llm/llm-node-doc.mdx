@@ -1,0 +1,66 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './llm-node.stories'
+
+<Meta title="AI New/Node Cards/LLM/Documentation" />
+
+# LLM node
+
+The LLM node receives text input and uses a selected language model to
+generate a text response. It interprets the prompt and provided instructions
+to determine the content of the response. The generated text can be passed to
+a compatible downstream node.
+
+_Note: ElevenLabs does not currently provide a standalone public description
+of the LLM node in ElevenCreative Flows. This description is based on its
+documented LLM functionality in ElevenAgents._
+
+## Anatomy
+
+Header with active model, preview area for the generated text, prompt row with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `text` — aligned with the prompt input
+
+**Outputs**
+
+- `text` — aligned with the preview top
+
+## Node menu
+
+- Model picker — GPT-5, Claude Sonnet 5, Gemini 3 Pro (searchable, with descriptions)
+- Duplicate, Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.SelectedEmpty} />
+
+### Selected — Typing
+
+<Canvas of={Stories.SelectedTyping} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Generating — In Process
+
+<Canvas of={Stories.Generating} />
+
+### Generated
+
+<Canvas of={Stories.Generated} />
+
+### Generated — Error
+
+<Canvas of={Stories.GeneratedError} />
