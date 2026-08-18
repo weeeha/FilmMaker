@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Play, TriangleAlert, Video } from 'lucide-react'
+import { ClapperboardIcon, DownloadIcon, EllipsisIcon, Play, SparklesIcon, Trash2Icon, TriangleAlert, Video, ZapIcon } from 'lucide-react'
 import { expect, userEvent, within } from 'storybook/test'
 
 import {
@@ -13,12 +13,13 @@ import {
   AINodeTitle,
 } from '@/components/ai/ai-node'
 import { NodePort } from '@/components/ai/node-port'
-import { RunButton } from '@/components/ai/run-button'
+import { NodeMenu, NodeMenuAction, NodeMenuSeparator } from '@/components/ai/node-menu'
+import { DemoRunButton, ModelPicker, OptionSelect, SoundToggle } from '../shared'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
 const meta = {
-  title: 'AI New/Node/Video',
+  title: 'AI New/Node Cards/Video Generation/States',
   component: AINode,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -36,12 +37,17 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const videoInputPorts = (
-  <AINodePorts side="input">
-    <NodePort type="speech" />
-    <NodePort type="audio" />
-    <NodePort type="image" />
-    <NodePort type="text" />
-  </AINodePorts>
+  <>
+    <AINodePorts side="input">
+      <NodePort type="speech" />
+      <NodePort type="audio" />
+      <NodePort type="image" />
+    </AINodePorts>
+    {/* text in — next to the prompt input */}
+    <AINodePorts side="input" className="top-[353px] translate-y-0">
+      <NodePort type="text" />
+    </AINodePorts>
+  </>
 )
 
 const videoOutputPort = (
@@ -64,9 +70,65 @@ const emptyPreview = (
   </>
 )
 
+const VideoNodeMenu = () => (
+  <NodeMenu aria-label="Video node settings">
+    <ModelPicker
+      heading="Video models"
+      defaultValue="veo-3-1-fast"
+      models={[
+        {
+          value: 'veo-3-1-fast',
+          name: 'Veo 3.1 Fast',
+          description: 'Fast, cost-efficient, audio-backed, up to 4K.',
+          icon: <ZapIcon />,
+        },
+        {
+          value: 'seedance-2',
+          name: 'Seedance 2.0',
+          description: 'Next-gen realism, high prompt control.',
+          icon: <ClapperboardIcon />,
+        },
+        {
+          value: 'gemini-omni-flash',
+          name: 'Gemini Omni Flash',
+          description: 'Physics-aware, consistent, audio-backed.',
+          icon: <SparklesIcon />,
+        },
+      ]}
+    />
+    <OptionSelect
+      label="Aspect Ratio"
+      options={['21:9', '16:9', '4:3', '1:1', '3:4', '9:16']}
+      defaultValue="16:9"
+    />
+    <OptionSelect
+      label="Resolution"
+      options={['480p', '720p', '1080p', '4K']}
+      defaultValue="720p"
+    />
+    <OptionSelect
+      label="Duration"
+      options={['4s', '5s', '6s', '7s', '8s', '9s', '10s', '11s', '12s', '13s', '14s', '15s']}
+      defaultValue="4s"
+    />
+    <SoundToggle />
+    <NodeMenuSeparator />
+    <NodeMenuAction aria-label="Download">
+      <DownloadIcon />
+    </NodeMenuAction>
+    <NodeMenuAction aria-label="Delete">
+      <Trash2Icon />
+    </NodeMenuAction>
+    <NodeMenuAction aria-label="More actions">
+      <EllipsisIcon />
+    </NodeMenuAction>
+  </NodeMenu>
+)
+
 export const Default: Story = {
   render: () => (
-    <AINode>
+    <div className="flex flex-col items-center gap-4">
+    <AINode inert>
       <AINodeHeader>
         <AINodeTitle>
           <Video aria-hidden="true" />
@@ -77,16 +139,20 @@ export const Default: Story = {
       <AINodePreview>{emptyPreview}</AINodePreview>
       <AINodeFooter>
         <AINodePrompt placeholder="Describe your video..." />
-        <RunButton menu={runMenu} />
+        <DemoRunButton menu={runMenu} />
       </AINodeFooter>
       {videoInputPorts}
       {videoOutputPort}
     </AINode>
+      <VideoNodeMenu />
+    </div>
   ),
 }
 
 export const Selected: Story = {
+  name: 'Selected — Empty',
   render: () => (
+    <div className="flex flex-col items-center gap-4">
     <AINode selected>
       <AINodeHeader>
         <AINodeTitle>
@@ -98,16 +164,20 @@ export const Selected: Story = {
       <AINodePreview>{emptyPreview}</AINodePreview>
       <AINodeFooter>
         <AINodePrompt placeholder="Describe your video..." />
-        <RunButton menu={runMenu} />
+        <DemoRunButton menu={runMenu} />
       </AINodeFooter>
       {videoInputPorts}
       {videoOutputPort}
     </AINode>
+      <VideoNodeMenu />
+    </div>
   ),
 }
 
 export const TypingDescription: Story = {
+  name: 'Selected — Typing',
   render: () => (
+    <div className="flex flex-col items-center gap-4">
     <AINode selected>
       <AINodeHeader>
         <AINodeTitle>
@@ -119,11 +189,13 @@ export const TypingDescription: Story = {
       <AINodePreview>{emptyPreview}</AINodePreview>
       <AINodeFooter>
         <AINodePrompt placeholder="Describe your video..." />
-        <RunButton menu={runMenu} />
+        <DemoRunButton menu={runMenu} />
       </AINodeFooter>
       {videoInputPorts}
       {videoOutputPort}
     </AINode>
+      <VideoNodeMenu />
+    </div>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
@@ -133,8 +205,38 @@ export const TypingDescription: Story = {
   },
 }
 
-export const Generating: Story = {
+export const SelectedFilled: Story = {
+  name: 'Selected — Filled',
   render: () => (
+    <div className="flex flex-col items-center gap-4">
+    <AINode selected>
+      <AINodeHeader>
+        <AINodeTitle>
+          <Video aria-hidden="true" />
+          Video
+        </AINodeTitle>
+        <AINodeMeta>Veo 3.1 Fast</AINodeMeta>
+      </AINodeHeader>
+      <AINodePreview>{emptyPreview}</AINodePreview>
+      <AINodeFooter>
+        <AINodePrompt
+          placeholder="Describe your video..."
+          defaultValue="A slow cinematic drone shot over a foggy forest"
+        />
+        <DemoRunButton menu={runMenu} />
+      </AINodeFooter>
+      {videoInputPorts}
+      {videoOutputPort}
+    </AINode>
+      <VideoNodeMenu />
+    </div>
+  ),
+}
+
+export const Generating: Story = {
+  name: 'Generating — In Process',
+  render: () => (
+    <div className="flex flex-col items-center gap-4">
     <AINode>
       <AINodeHeader>
         <AINodeTitle>
@@ -153,16 +255,19 @@ export const Generating: Story = {
           defaultValue="A slow cinematic drone shot over a foggy forest"
           disabled
         />
-        <RunButton loading menu={runMenu} />
+        <DemoRunButton loading menu={runMenu} />
       </AINodeFooter>
       {videoInputPorts}
       {videoOutputPort}
     </AINode>
+      <VideoNodeMenu />
+    </div>
   ),
 }
 
-export const Result: Story = {
+export const Generated: Story = {
   render: () => (
+    <div className="flex flex-col items-center gap-4">
     <AINode>
       <AINodeHeader>
         <AINodeTitle>
@@ -186,16 +291,20 @@ export const Result: Story = {
           placeholder="Describe your video..."
           defaultValue="A slow cinematic drone shot over a foggy forest"
         />
-        <RunButton menu={runMenu} />
+        <DemoRunButton menu={runMenu} />
       </AINodeFooter>
       {videoInputPorts}
       {videoOutputPort}
     </AINode>
+      <VideoNodeMenu />
+    </div>
   ),
 }
 
-export const Error: Story = {
+export const GeneratedError: Story = {
+  name: 'Generated — Error',
   render: () => (
+    <div className="flex flex-col items-center gap-4">
     <AINode>
       <AINodeHeader>
         <AINodeTitle>
@@ -215,17 +324,20 @@ export const Error: Story = {
           placeholder="Describe your video..."
           defaultValue="A slow cinematic drone shot over a foggy forest"
         />
-        <RunButton label="Retry" menu={runMenu} />
+        <DemoRunButton label="Retry" menu={runMenu} />
       </AINodeFooter>
       {videoInputPorts}
       {videoOutputPort}
     </AINode>
+      <VideoNodeMenu />
+    </div>
   ),
 }
 
 export const Disabled: Story = {
   render: () => (
-    <AINode className="opacity-60">
+    <div className="flex flex-col items-center gap-4">
+    <AINode disabled>
       <AINodeHeader>
         <AINodeTitle>
           <Video aria-hidden="true" />
@@ -236,10 +348,12 @@ export const Disabled: Story = {
       <AINodePreview>{emptyPreview}</AINodePreview>
       <AINodeFooter>
         <AINodePrompt placeholder="Describe your video..." disabled />
-        <RunButton disabled menu={runMenu} />
+        <DemoRunButton disabled menu={runMenu} />
       </AINodeFooter>
       {videoInputPorts}
       {videoOutputPort}
     </AINode>
+      <VideoNodeMenu />
+    </div>
   ),
 }

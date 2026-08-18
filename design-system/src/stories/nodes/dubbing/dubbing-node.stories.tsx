@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Captions, DownloadIcon, EllipsisIcon, Trash2Icon } from 'lucide-react'
 
-import { AINode, AINodePorts } from '@/components/ai/ai-node'
+import { AINode, AINodeHeader, AINodeMeta, AINodePorts, AINodePreview, AINodeTitle } from '@/components/ai/ai-node'
 import {
   NodeMenu,
   NodeMenuAction,
@@ -14,12 +14,12 @@ import {
   NodeMenuSeparator,
 } from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
-import { RunButton } from '@/components/ai/run-button'
+import { DemoRunButton } from '../shared'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
 const meta = {
-  title: 'AI New/Node/Dubbing',
+  title: 'AI New/Node Cards/Dubbing/States',
   component: AINode,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -90,23 +90,24 @@ const DubbingNodeMenu = () => (
   </NodeMenu>
 )
 
-/** Label + model name above the card. */
-const DubbingNodeLabel = () => (
-  <div className="flex items-center justify-between gap-2 px-1">
-    <span className="flex items-center gap-1.5 text-[13px] font-medium text-neutral-500 [&_svg]:size-3.5">
+const header = (
+  <AINodeHeader>
+    <AINodeTitle>
       <Captions aria-hidden="true" />
       Dubbing
-    </span>
-    <span className="text-[13px] text-neutral-400">Dubbing v2 Alpha</span>
-  </div>
+    </AINodeTitle>
+    <AINodeMeta>Dubbing v2 Alpha</AINodeMeta>
+  </AINodeHeader>
 )
 
 const ports = (
   <>
-    <AINodePorts side="input" className="top-[16px] translate-y-0">
+    {/* video in — centered on the source area */}
+    <AINodePorts side="input" className="top-[70px] translate-y-0">
       <NodePort type="video" />
     </AINodePorts>
-    <AINodePorts side="output" className="top-[16px]">
+    {/* video out — centered on the source area */}
+    <AINodePorts side="output" className="top-[70px]">
       <NodePort type="video" />
     </AINodePorts>
   </>
@@ -114,44 +115,42 @@ const ports = (
 
 const DubbingNode = ({
   selected = false,
+  inert = false,
   body,
   disabled = true,
   loading = false,
 }: {
   selected?: boolean
+  inert?: boolean
   body?: React.ReactNode
   disabled?: boolean
   loading?: boolean
 }) => (
-  <div className="flex w-[300px] flex-col gap-4">
-    <div className="flex flex-col gap-1.5">
-      <DubbingNodeLabel />
-      <AINode selected={selected} className="w-[300px] shrink-0">
+  <div className="flex w-[300px] flex-col items-center gap-4">
+    <AINode selected={selected} inert={inert || undefined} className="w-[300px] shrink-0">
+        {header}
         {/* source area — empty state until a source is connected */}
-        <div className="flex h-[70px] w-full items-center justify-center rounded-t-[12px] bg-neutral-50 px-4 text-center">
+        <AINodePreview className="h-[70px] px-4 text-center">
           {body ?? (
             <p className="text-[13px] text-neutral-500">
               Connect an audio or video source
             </p>
           )}
-        </div>
+        </AINodePreview>
 
         <div className="flex justify-end px-3 py-2.5">
-          <RunButton disabled={disabled} loading={loading} menu={runMenu} />
+          <DemoRunButton disabled={disabled} loading={loading} menu={runMenu} />
         </div>
 
         {ports}
-      </AINode>
-    </div>
-    <div className="flex justify-center">
-      <DubbingNodeMenu />
-    </div>
+    </AINode>
+    <DubbingNodeMenu />
   </div>
 )
 
 export const Default: Story = {
   name: 'No Source',
-  render: () => <DubbingNode />,
+  render: () => <DubbingNode inert />,
 }
 
 export const Ready: Story = {

@@ -1,16 +1,9 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import {
-  AudioLines,
-  CheckIcon,
-  ChevronsUpDown,
-  EllipsisIcon,
-  SlidersHorizontal,
-  Trash2Icon,
-  Volume2,
-} from 'lucide-react'
+import { AudioLines, CheckIcon, ChevronsUpDown, EllipsisIcon, SlidersHorizontal, Trash2Icon, TriangleAlert, Volume2 } from 'lucide-react'
+import { expect, userEvent, within } from 'storybook/test'
 
-import { AINode, AINodePorts } from '@/components/ai/ai-node'
+import { AINode, AINodeHeader, AINodeMeta, AINodePorts, AINodePreview, AINodeTitle } from '@/components/ai/ai-node'
 import {
   NodeMenu,
   NodeMenuAction,
@@ -22,7 +15,7 @@ import {
   NodeMenuSeparator,
 } from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
-import { RunButton } from '@/components/ai/run-button'
+import { DemoRunButton } from '../shared'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,7 +25,7 @@ import {
 import { Spinner } from '@/components/ui/spinner'
 
 const meta = {
-  title: 'AI New/Node/Text to Speech',
+  title: 'AI New/Node Cards/Text to Speech/States',
   component: AINode,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -152,25 +145,24 @@ const SpeechNodeMenu = () => (
   </NodeMenu>
 )
 
-/** Label + model name above the card. */
-const SpeechNodeLabel = () => (
-  <div className="flex items-center justify-between gap-2 px-1">
-    <span className="flex items-center gap-1.5 text-[13px] font-medium text-neutral-500 [&_svg]:size-3.5">
+const header = (
+  <AINodeHeader>
+    <AINodeTitle>
       <AudioLines aria-hidden="true" />
       Text to Speech
-    </span>
-    <span className="text-[13px] text-neutral-400">Eleven Multilingual v2</span>
-  </div>
+    </AINodeTitle>
+    <AINodeMeta>Eleven Multilingual v2</AINodeMeta>
+  </AINodeHeader>
 )
 
 const ports = (
   <>
-    {/* text in — aligned to the prompt area */}
-    <AINodePorts side="input" className="top-[170px] translate-y-0">
+    {/* text in — centered on the text area */}
+    <AINodePorts side="input" className="top-[250px] translate-y-0">
       <NodePort type="text" />
     </AINodePorts>
-    {/* audio out — aligned to the preview strip */}
-    <AINodePorts side="output" className="top-[28px]">
+    {/* audio out — centered on the preview strip */}
+    <AINodePorts side="output" className="top-[77px]">
       <NodePort type="sound" />
     </AINodePorts>
   </>
@@ -178,21 +170,24 @@ const ports = (
 
 const SpeechNode = ({
   selected = false,
+  inert = false,
   preview,
   promptValue,
   loading = false,
+  runLabel,
 }: {
   selected?: boolean
+  inert?: boolean
   preview?: React.ReactNode
   promptValue?: string
   loading?: boolean
+  runLabel?: string
 }) => (
-  <div className="flex w-[420px] flex-col gap-4">
-    <div className="flex flex-col gap-1.5">
-      <SpeechNodeLabel />
-      <AINode selected={selected} className="shrink-0">
+  <div className="flex w-[420px] flex-col items-center gap-4">
+    <AINode selected={selected} inert={inert || undefined} className="w-full shrink-0">
+        {header}
         {/* preview strip */}
-        <div className="flex h-[84px] w-full items-center justify-center gap-2 border-b border-border px-4">
+        <AINodePreview className="h-[84px] flex-row px-4">
           {preview ?? (
             <>
               <Volume2 aria-hidden="true" className="size-4 text-neutral-400" />
@@ -201,7 +196,7 @@ const SpeechNode = ({
               </p>
             </>
           )}
-        </div>
+        </AINodePreview>
 
         {/* voice row */}
         <div className="flex items-center gap-2 border-b border-border px-4 py-3">
@@ -224,28 +219,43 @@ const SpeechNode = ({
             className="h-[52px] w-full resize-none bg-transparent text-[15px] leading-snug text-neutral-700 outline-none placeholder:text-neutral-400"
           />
           <div className="flex justify-end">
-            <RunButton loading={loading} menu={runMenu} />
+            <DemoRunButton label={runLabel} loading={loading} menu={runMenu} />
           </div>
         </div>
 
         {ports}
-      </AINode>
-    </div>
-    <div className="flex justify-center">
-      <SpeechNodeMenu />
-    </div>
+    </AINode>
+    <SpeechNodeMenu />
   </div>
 )
 
 export const Default: Story = {
-  render: () => <SpeechNode />,
+  render: () => <SpeechNode inert />,
 }
 
-export const Selected: Story = {
+export const SelectedEmpty: Story = {
+  name: 'Selected — Empty',
   render: () => <SpeechNode selected />,
 }
 
+export const SelectedTyping: Story = {
+  name: 'Selected — Typing',
+  render: () => <SpeechNode selected />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const prompt = canvas.getByRole('textbox', { name: 'Prompt' })
+    await userEvent.type(prompt, 'Welcome to the forest — where every shadow tells a story.')
+    await expect(prompt).toHaveValue('Welcome to the forest — where every shadow tells a story.')
+  },
+}
+
+export const SelectedFilled: Story = {
+  name: 'Selected — Filled',
+  render: () => <SpeechNode selected promptValue='Welcome to the forest — where every shadow tells a story.' />,
+}
+
 export const Generating: Story = {
+  name: 'Generating — In Process',
   render: () => (
     <SpeechNode
       loading
@@ -260,7 +270,7 @@ export const Generating: Story = {
   ),
 }
 
-export const Result: Story = {
+export const Generated: Story = {
   render: () => (
     <SpeechNode
       promptValue="Welcome to the forest — where every shadow tells a story."
@@ -268,6 +278,24 @@ export const Result: Story = {
         <>
           <AudioLines aria-hidden="true" className="size-5 text-neutral-500" />
           <p className="text-[15px] text-neutral-500">0:07</p>
+        </>
+      }
+    />
+  ),
+}
+
+export const GeneratedError: Story = {
+  name: 'Generated — Error',
+  render: () => (
+    <SpeechNode
+      promptValue='Welcome to the forest — where every shadow tells a story.'
+      runLabel="Retry"
+      preview={
+        <>
+          <TriangleAlert aria-hidden="true" className="size-5 text-destructive" />
+          <p role="status" className="text-[15px] text-destructive">
+            Generation failed. Try again.
+          </p>
         </>
       }
     />

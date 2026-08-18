@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Video Generation/Spec" />
+
+# Video Generation node — spec
+
+## Description
+
+The Video Generation node creates dynamic video clips from a text prompt and
+optional visual references. Depending on the selected model, it can generate
+a video from text, animate an existing image, and produce synchronized audio.
+The generated video can be passed to a compatible downstream node.
+
+_Source: ElevenLabs Image & Video._
+
+## Rules
+
+- The node has speech, audio, and image reference input ports plus a text input port aligned with the prompt input.
+- It has one video output port.
+- Model, aspect ratio, resolution, duration, and sound are set in the node menu.
+- Generation can be re-run; the previous result is replaced.
+- Its output must connect to a compatible video input on another node.

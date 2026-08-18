@@ -18,7 +18,34 @@ const preview: Preview = {
 
     options: {
       storySort: {
-        order: ['Prototypes', 'Basics', 'Components', 'AI', 'AI New'],
+        order: [
+          'Prototypes',
+          'Basics',
+          'Components',
+          'AI',
+          'AI New',
+          [
+            'Node Menu',
+            'Node Port',
+            'Run Button',
+            'Node Cards',
+            [
+              'Text',
+              'LLM',
+              'Image Generation',
+              'Video Generation',
+              'Avatar',
+              'Lip Sync',
+              'Text to Speech',
+              'Sound Effects',
+              'Music',
+              'Dubbing',
+              'Voice Changer',
+              'Voice Isolator',
+              'Composition',
+            ],
+          ],
+        ],
       },
     },
 

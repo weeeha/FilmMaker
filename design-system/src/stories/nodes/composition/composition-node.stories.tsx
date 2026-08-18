@@ -9,15 +9,15 @@ import {
   Volume2,
 } from 'lucide-react'
 
-import { AINode, AINodePorts } from '@/components/ai/ai-node'
+import { AINode, AINodeHeader, AINodePorts, AINodePreview, AINodeTitle } from '@/components/ai/ai-node'
 import { NodeMenu, NodeMenuAction, NodeMenuSeparator } from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
-import { RunButton } from '@/components/ai/run-button'
+import { DemoRunButton } from '../shared'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
 const meta = {
-  title: 'AI New/Node/Composition',
+  title: 'AI New/Node Cards/Composition/States',
   component: AINode,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -101,45 +101,46 @@ const CompositionNodeMenu = () => (
 
 const ports = (
   <>
-    {/* video out — aligned to the preview area */}
-    <AINodePorts side="output" className="top-[28px]">
+    {/* video track in — centered on the video track row */}
+    <AINodePorts side="input" className="top-[524px] translate-y-0">
       <NodePort type="video" />
     </AINodePorts>
-    {/* video track in */}
-    <AINodePorts side="input" className="top-[463px] translate-y-0">
-      <NodePort type="video" />
-    </AINodePorts>
-    {/* audio track in */}
-    <AINodePorts side="input" className="top-[525px] translate-y-0">
+    {/* audio track in — centered on the audio track row */}
+    <AINodePorts side="input" className="top-[586px] translate-y-0">
       <NodePort type="sound" />
+    </AINodePorts>
+    {/* video out — aligned with the preview top */}
+    <AINodePorts side="output" className="top-[49px]">
+      <NodePort type="video" />
     </AINodePorts>
   </>
 )
 
 const CompositionNode = ({
   selected = false,
+  inert = false,
   preview,
   loading = false,
   videoClip,
   audioClip,
 }: {
   selected?: boolean
+  inert?: boolean
   preview?: React.ReactNode
   loading?: boolean
   videoClip?: React.ReactNode
   audioClip?: React.ReactNode
 }) => (
-  <div className="flex w-[900px] flex-col gap-4">
-    <div className="flex flex-col gap-1.5">
-      {/* node name above the card — 13px, --color-neutral-500 */}
-      <span className="flex items-center gap-1.5 px-1 text-[13px] font-medium text-neutral-500 [&_svg]:size-3.5">
-        <Images aria-hidden="true" />
-        Composition
-      </span>
-
-      <AINode selected={selected} className="w-[900px] shrink-0">
+  <div className="flex w-[900px] flex-col items-center gap-4">
+    <AINode selected={selected} inert={inert || undefined} className="w-[900px] shrink-0">
+        <AINodeHeader>
+          <AINodeTitle>
+            <Images aria-hidden="true" />
+            Composition
+          </AINodeTitle>
+        </AINodeHeader>
         {/* preview area with the Run button pinned bottom-right */}
-        <div className="relative flex h-[420px] w-full flex-col items-center justify-center gap-2 border-b border-border">
+        <AINodePreview className="relative h-[420px]">
           {preview ?? (
             <>
               <Video aria-hidden="true" className="size-6 text-neutral-400" />
@@ -149,9 +150,9 @@ const CompositionNode = ({
             </>
           )}
           <div className="absolute right-4 bottom-4">
-            <RunButton loading={loading} menu={runMenu} />
+            <DemoRunButton loading={loading} menu={runMenu} />
           </div>
-        </div>
+        </AINodePreview>
 
         <TimelineRuler />
         <Track>{videoClip}</Track>
@@ -167,16 +168,13 @@ const CompositionNode = ({
         </button>
 
         {ports}
-      </AINode>
-    </div>
-    <div className="flex justify-center">
-      <CompositionNodeMenu />
-    </div>
+    </AINode>
+    <CompositionNodeMenu />
   </div>
 )
 
 export const Default: Story = {
-  render: () => <CompositionNode />,
+  render: () => <CompositionNode inert />,
 }
 
 export const Selected: Story = {

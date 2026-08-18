@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DownloadIcon, EllipsisIcon, Trash2Icon, UserRound, Video } from 'lucide-react'
+import { DownloadIcon, EllipsisIcon, Trash2Icon, TriangleAlert, UserRound, Video } from 'lucide-react'
+import { expect, userEvent, within } from 'storybook/test'
 
-import { AINode, AINodePorts } from '@/components/ai/ai-node'
+import { AINode, AINodeHeader, AINodeMeta, AINodePorts, AINodePreview, AINodeTitle } from '@/components/ai/ai-node'
 import {
   NodeMenu,
   NodeMenuAction,
@@ -14,12 +15,12 @@ import {
   NodeMenuSeparator,
 } from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
-import { RunButton } from '@/components/ai/run-button'
+import { DemoRunButton } from '../shared'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
 const meta = {
-  title: 'AI New/Node/Lip Sync',
+  title: 'AI New/Node Cards/Lip Sync/States',
   component: AINode,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -98,33 +99,29 @@ const LipSyncNodeMenu = () => (
   </NodeMenu>
 )
 
-/** Label + model name above the card. */
-const LipSyncNodeLabel = () => (
-  <div className="flex items-center justify-between gap-2 px-1">
-    <span className="flex items-center gap-1.5 text-[13px] font-medium text-neutral-500 [&_svg]:size-3.5">
+const header = (
+  <AINodeHeader>
+    <AINodeTitle>
       <UserRound aria-hidden="true" />
       Lip Sync
-    </span>
-    <span className="text-[13px] text-neutral-400">Creatify Aurora</span>
-  </div>
+    </AINodeTitle>
+    <AINodeMeta>Creatify Aurora</AINodeMeta>
+  </AINodeHeader>
 )
 
 const ports = (
   <>
-    {/* avatar in */}
-    <AINodePorts side="input" className="top-[251px] translate-y-0">
+    {/* avatar + audio in — centered on the preview area */}
+    <AINodePorts side="input" className="top-[193px] translate-y-0">
       <NodePort type="avatar" />
-    </AINodePorts>
-    {/* audio in */}
-    <AINodePorts side="input" className="top-[304px] translate-y-0">
       <NodePort type="sound" />
     </AINodePorts>
-    {/* text guidance in — aligned to the prompt row */}
-    <AINodePorts side="input" className="top-[379px] translate-y-0">
+    {/* text guidance in — centered on the prompt row */}
+    <AINodePorts side="input" className="top-[433px] translate-y-0">
       <NodePort type="text" />
     </AINodePorts>
-    {/* video out */}
-    <AINodePorts side="output" className="top-[18px]">
+    {/* video out — aligned with the preview top */}
+    <AINodePorts side="output" className="top-[49px]">
       <NodePort type="video" />
     </AINodePorts>
   </>
@@ -132,21 +129,24 @@ const ports = (
 
 const LipSyncNode = ({
   selected = false,
+  inert = false,
   preview,
   promptValue,
   loading = false,
+  runLabel,
 }: {
   selected?: boolean
+  inert?: boolean
   preview?: React.ReactNode
   promptValue?: string
   loading?: boolean
+  runLabel?: string
 }) => (
-  <div className="flex w-[360px] flex-col gap-4">
-    <div className="flex flex-col gap-1.5">
-      <LipSyncNodeLabel />
-      <AINode selected={selected} className="w-[360px] shrink-0">
+  <div className="flex w-[360px] flex-col items-center gap-4">
+    <AINode selected={selected} inert={inert || undefined} className="w-[360px] shrink-0">
+        {header}
         {/* preview area */}
-        <div className="flex h-[352px] w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-t-[12px] border-b border-border">
+        <AINodePreview className="h-[352px]">
           {preview ?? (
             <>
               <Video aria-hidden="true" className="size-6 text-neutral-400" />
@@ -155,7 +155,7 @@ const LipSyncNode = ({
               </p>
             </>
           )}
-        </div>
+        </AINodePreview>
 
         {/* prompt row */}
         <div className="flex items-center gap-2 px-4 py-4">
@@ -166,27 +166,42 @@ const LipSyncNode = ({
             defaultValue={promptValue}
             className="h-9 min-w-0 flex-1 bg-transparent text-[15px] text-neutral-700 outline-none placeholder:text-neutral-400"
           />
-          <RunButton loading={loading} menu={runMenu} />
+          <DemoRunButton label={runLabel} loading={loading} menu={runMenu} />
         </div>
 
         {ports}
-      </AINode>
-    </div>
-    <div className="flex justify-center">
-      <LipSyncNodeMenu />
-    </div>
+    </AINode>
+    <LipSyncNodeMenu />
   </div>
 )
 
 export const Default: Story = {
-  render: () => <LipSyncNode />,
+  render: () => <LipSyncNode inert />,
 }
 
-export const Selected: Story = {
+export const SelectedEmpty: Story = {
+  name: 'Selected — Empty',
   render: () => <LipSyncNode selected />,
 }
 
+export const SelectedTyping: Story = {
+  name: 'Selected — Typing',
+  render: () => <LipSyncNode selected />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const prompt = canvas.getByRole('textbox', { name: 'Prompt' })
+    await userEvent.type(prompt, 'Keep the delivery calm and natural')
+    await expect(prompt).toHaveValue('Keep the delivery calm and natural')
+  },
+}
+
+export const SelectedFilled: Story = {
+  name: 'Selected — Filled',
+  render: () => <LipSyncNode selected promptValue='Keep the delivery calm and natural' />,
+}
+
 export const Generating: Story = {
+  name: 'Generating — In Process',
   render: () => (
     <LipSyncNode
       loading
@@ -201,7 +216,7 @@ export const Generating: Story = {
   ),
 }
 
-export const Result: Story = {
+export const Generated: Story = {
   render: () => (
     <LipSyncNode
       promptValue="Keep the delivery calm and natural"
@@ -211,6 +226,24 @@ export const Result: Story = {
           aria-label="Generated lip sync preview"
           className="size-full bg-linear-to-b from-stone-300 via-stone-400 to-stone-600"
         />
+      }
+    />
+  ),
+}
+
+export const GeneratedError: Story = {
+  name: 'Generated — Error',
+  render: () => (
+    <LipSyncNode
+      promptValue='Keep the delivery calm and natural'
+      runLabel="Retry"
+      preview={
+        <>
+          <TriangleAlert aria-hidden="true" className="size-6 text-destructive" />
+          <p role="status" className="text-[15px] text-destructive">
+            Generation failed. Try again.
+          </p>
+        </>
       }
     />
   ),

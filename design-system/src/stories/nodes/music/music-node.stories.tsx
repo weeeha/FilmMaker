@@ -1,16 +1,9 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import {
-  AudioLines,
-  CheckIcon,
-  EllipsisIcon,
-  ListMusic,
-  Music,
-  SparklesIcon,
-  Trash2Icon,
-} from 'lucide-react'
+import { AudioLines, CheckIcon, EllipsisIcon, ListMusic, Music, SparklesIcon, Trash2Icon, TriangleAlert } from 'lucide-react'
+import { expect, userEvent, within } from 'storybook/test'
 
-import { AINode, AINodePorts } from '@/components/ai/ai-node'
+import { AINode, AINodeHeader, AINodeMeta, AINodePorts, AINodePreview, AINodeTitle } from '@/components/ai/ai-node'
 import {
   NodeMenu,
   NodeMenuAction,
@@ -31,13 +24,13 @@ import {
   NodeMenuSeparator,
 } from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
-import { RunButton } from '@/components/ai/run-button'
+import { DemoRunButton } from '../shared'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 import { Switch } from '@/components/ui/switch'
 
 const meta = {
-  title: 'AI New/Node/Music',
+  title: 'AI New/Node Cards/Music/States',
   component: AINode,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -147,32 +140,32 @@ const MusicNodeMenu = () => (
   </NodeMenu>
 )
 
-/** Label + model name above the card (not an in-card header for this node). */
-const MusicNodeLabel = () => (
-  <div className="flex items-center justify-between gap-2 px-1">
-    <span className="flex items-center gap-1.5 text-[13px] font-medium text-neutral-500 [&_svg]:size-3.5">
+const header = (
+  <AINodeHeader>
+    <AINodeTitle>
       <Music aria-hidden="true" />
       Music
-    </span>
-    <span className="text-[13px] text-neutral-400">Eleven Music</span>
-  </div>
+    </AINodeTitle>
+    <AINodeMeta>Eleven Music</AINodeMeta>
+  </AINodeHeader>
 )
 
 const ports = (
   <>
-    {/* music in — aligned to the preview strip */}
-    <AINodePorts side="input" className="top-[24px] translate-y-0">
+    {/* music reference in — centered on the preview strip */}
+    <AINodePorts side="input" className="top-[77px] translate-y-0">
       <NodePort type="audio" />
     </AINodePorts>
-    {/* lyrics text in */}
-    <AINodePorts side="input" className="top-[142px] translate-y-0">
+    {/* lyrics text in — centered on the lyrics section */}
+    <AINodePorts side="input" className="top-[190px] translate-y-0">
       <NodePort type="text" />
     </AINodePorts>
-    {/* prompt text in */}
-    <AINodePorts side="input" className="top-[238px] translate-y-0">
+    {/* prompt text in — centered on the prompt section */}
+    <AINodePorts side="input" className="top-[305px] translate-y-0">
       <NodePort type="text" />
     </AINodePorts>
-    <AINodePorts side="output" className="top-[24px]">
+    {/* audio out — centered on the preview strip */}
+    <AINodePorts side="output" className="top-[77px]">
       <NodePort type="audio" />
     </AINodePorts>
   </>
@@ -180,27 +173,30 @@ const ports = (
 
 const MusicNode = ({
   selected = false,
+  inert = false,
   preview,
   lyrics = true,
   lyricsValue,
   promptValue,
   loading = false,
+  runLabel,
 }: {
   selected?: boolean
+  inert?: boolean
   preview?: React.ReactNode
   lyrics?: boolean
   lyricsValue?: string
   promptValue?: string
   loading?: boolean
+  runLabel?: string
 }) => {
   const [lyricsOn, setLyricsOn] = useState(lyrics)
   return (
-    <div className="flex w-[420px] flex-col gap-4">
-      <div className="flex flex-col gap-1.5">
-        <MusicNodeLabel />
-        <AINode selected={selected} className="shrink-0">
+    <div className="flex w-[420px] flex-col items-center gap-4">
+      <AINode selected={selected} inert={inert || undefined} className="w-full shrink-0">
+          {header}
           {/* preview strip */}
-          <div className="flex h-[84px] w-full items-center justify-center gap-2 border-b border-border px-4">
+          <AINodePreview className="h-[84px] flex-row px-4">
             {preview ?? (
               <>
                 <Music aria-hidden="true" className="size-4 text-neutral-400" />
@@ -209,7 +205,7 @@ const MusicNode = ({
                 </p>
               </>
             )}
-          </div>
+          </AINodePreview>
 
           {/* lyrics section */}
           <div className="border-b border-border">
@@ -242,26 +238,40 @@ const MusicNode = ({
               className="h-[52px] w-full resize-none bg-transparent text-[15px] leading-snug text-neutral-700 outline-none placeholder:text-neutral-400"
             />
             <div className="flex justify-end">
-              <RunButton loading={loading} menu={runMenu} />
+              <DemoRunButton label={runLabel} loading={loading} menu={runMenu} />
             </div>
           </div>
 
           {ports}
-        </AINode>
-      </div>
-      <div className="flex justify-center">
-        <MusicNodeMenu />
-      </div>
+      </AINode>
+      <MusicNodeMenu />
     </div>
   )
 }
 
 export const Default: Story = {
-  render: () => <MusicNode />,
+  render: () => <MusicNode inert />,
 }
 
-export const Selected: Story = {
+export const SelectedEmpty: Story = {
+  name: 'Selected — Empty',
   render: () => <MusicNode selected />,
+}
+
+export const SelectedTyping: Story = {
+  name: 'Selected — Typing',
+  render: () => <MusicNode selected />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const prompt = canvas.getByRole('textbox', { name: 'Prompt' })
+    await userEvent.type(prompt, 'Dreamy synth-pop with a slow build and warm bass')
+    await expect(prompt).toHaveValue('Dreamy synth-pop with a slow build and warm bass')
+  },
+}
+
+export const SelectedFilled: Story = {
+  name: 'Selected — Filled',
+  render: () => <MusicNode selected promptValue='Dreamy synth-pop with a slow build and warm bass' />,
 }
 
 export const LyricsOff: Story = {
@@ -270,6 +280,7 @@ export const LyricsOff: Story = {
 }
 
 export const Generating: Story = {
+  name: 'Generating — In Process',
   render: () => (
     <MusicNode
       loading
@@ -284,7 +295,7 @@ export const Generating: Story = {
   ),
 }
 
-export const Result: Story = {
+export const Generated: Story = {
   render: () => (
     <MusicNode
       promptValue="Dreamy synth-pop with a slow build and warm bass"
@@ -293,6 +304,24 @@ export const Result: Story = {
         <>
           <AudioLines aria-hidden="true" className="size-5 text-neutral-500" />
           <p className="text-[15px] text-neutral-500">2:14</p>
+        </>
+      }
+    />
+  ),
+}
+
+export const GeneratedError: Story = {
+  name: 'Generated — Error',
+  render: () => (
+    <MusicNode
+      promptValue='Dreamy synth-pop with a slow build and warm bass'
+      runLabel="Retry"
+      preview={
+        <>
+          <TriangleAlert aria-hidden="true" className="size-5 text-destructive" />
+          <p role="status" className="text-[15px] text-destructive">
+            Generation failed. Try again.
+          </p>
         </>
       }
     />

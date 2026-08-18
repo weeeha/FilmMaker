@@ -1,16 +1,7 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import {
-  CheckIcon,
-  DownloadIcon,
-  EllipsisIcon,
-  GemIcon,
-  ImageIcon,
-  ImageUpIcon,
-  SparklesIcon,
-  Trash2Icon,
-  ZapIcon,
-} from 'lucide-react'
+import { CheckIcon, DownloadIcon, EllipsisIcon, GemIcon, ImageIcon, ImageUpIcon, SparklesIcon, Trash2Icon, TriangleAlert, ZapIcon } from 'lucide-react'
+import { expect, userEvent, within } from 'storybook/test'
 
 import {
   AINode,
@@ -42,12 +33,12 @@ import {
   NodeMenuSeparator,
 } from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
-import { RunButton } from '@/components/ai/run-button'
+import { DemoRunButton } from '../shared'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
 const meta = {
-  title: 'AI New/Node/Image',
+  title: 'AI New/Node Cards/Image Generation/States',
   component: AINode,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -65,10 +56,15 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const inputPorts = (
-  <AINodePorts side="input">
-    <NodePort type="image" />
-    <NodePort type="text" />
-  </AINodePorts>
+  <>
+    <AINodePorts side="input">
+      <NodePort type="image" />
+    </AINodePorts>
+    {/* text in — next to the prompt input */}
+    <AINodePorts side="input" className="top-[353px] translate-y-0">
+      <NodePort type="text" />
+    </AINodePorts>
+  </>
 )
 
 const outputPort = (
@@ -224,73 +220,113 @@ const header = (
   </AINodeHeader>
 )
 
+const ImageGenerationNode = ({
+  selected = false,
+  inert = false,
+  preview,
+  promptValue,
+  promptDisabled = false,
+  loading = false,
+  runLabel,
+}: {
+  selected?: boolean
+  inert?: boolean
+  preview?: React.ReactNode
+  promptValue?: string
+  promptDisabled?: boolean
+  loading?: boolean
+  runLabel?: string
+}) => (
+  <div className="flex flex-col items-center gap-4">
+    <AINode selected={selected} inert={inert || undefined}>
+      {header}
+      <AINodePreview>{preview ?? emptyPreview}</AINodePreview>
+      <AINodeFooter>
+        <AINodePrompt
+          placeholder="Describe your image..."
+          defaultValue={promptValue}
+          disabled={promptDisabled}
+        />
+        <DemoRunButton label={runLabel} loading={loading} menu={runMenu} />
+      </AINodeFooter>
+      {inputPorts}
+      {outputPort}
+    </AINode>
+    <ImageNodeMenu />
+  </div>
+)
+
 export const Default: Story = {
-  render: () => (
-    <div className="flex flex-col items-center gap-4">
-      <AINode>
-        {header}
-        <AINodePreview>{emptyPreview}</AINodePreview>
-        <AINodeFooter>
-          <AINodePrompt placeholder="Describe your image..." />
-          <RunButton menu={runMenu} />
-        </AINodeFooter>
-        {inputPorts}
-        {outputPort}
-      </AINode>
-      <ImageNodeMenu />
-    </div>
-  ),
+  render: () => <ImageGenerationNode inert />,
+}
+
+export const SelectedEmpty: Story = {
+  name: 'Selected — Empty',
+  render: () => <ImageGenerationNode selected />,
+}
+
+export const SelectedTyping: Story = {
+  name: 'Selected — Typing',
+  render: () => <ImageGenerationNode selected />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const prompt = canvas.getByRole('textbox', { name: 'Prompt' })
+    await userEvent.type(prompt, 'A misty pine forest at golden hour')
+    await expect(prompt).toHaveValue('A misty pine forest at golden hour')
+  },
+}
+
+export const SelectedFilled: Story = {
+  name: 'Selected — Filled',
+  render: () => <ImageGenerationNode selected promptValue='A misty pine forest at golden hour' />,
 }
 
 export const Generating: Story = {
+  name: 'Generating — In Process',
   render: () => (
-    <div className="flex flex-col items-center gap-4">
-      <AINode>
-        {header}
-        <AINodePreview>
+    <ImageGenerationNode
+      loading
+      promptValue='A misty pine forest at golden hour'
+      promptDisabled
+      preview={
+        <>
           <Spinner className="size-6 text-neutral-400" />
           <p className="text-[13px] text-neutral-400">Generating…</p>
-        </AINodePreview>
-        <AINodeFooter>
-          <AINodePrompt
-            placeholder="Describe your image..."
-            defaultValue="A misty pine forest at golden hour"
-            disabled
-          />
-          <RunButton loading menu={runMenu} />
-        </AINodeFooter>
-        {inputPorts}
-        {outputPort}
-      </AINode>
-      <ImageNodeMenu />
-    </div>
+        </>
+      }
+    />
   ),
 }
 
-export const Result: Story = {
+export const Generated: Story = {
   render: () => (
-    <div className="flex flex-col items-center gap-4">
-      <AINode>
-        {header}
-        <AINodePreview>
-          {/* stand-in for the generated image */}
-          <div
-            role="img"
-            aria-label="Generated image preview"
-            className="size-full bg-linear-to-br from-amber-200 via-orange-300 to-emerald-700"
-          />
-        </AINodePreview>
-        <AINodeFooter>
-          <AINodePrompt
-            placeholder="Describe your image..."
-            defaultValue="A misty pine forest at golden hour"
-          />
-          <RunButton menu={runMenu} />
-        </AINodeFooter>
-        {inputPorts}
-        {outputPort}
-      </AINode>
-      <ImageNodeMenu />
-    </div>
+    <ImageGenerationNode
+      promptValue='A misty pine forest at golden hour'
+      preview={
+        <div
+          role="img"
+          aria-label="Generated image preview"
+          className="size-full bg-linear-to-br from-amber-200 via-orange-300 to-emerald-700"
+        />
+      }
+    />
+  ),
+}
+
+export const GeneratedError: Story = {
+  name: 'Generated — Error',
+  render: () => (
+    <ImageGenerationNode
+      promptValue='A misty pine forest at golden hour'
+      runLabel="Retry"
+      preview={
+        <>
+          <TriangleAlert aria-hidden="true" className="size-6 text-destructive" />
+          <p role="status" className="text-[13px] text-destructive">
+            Generation failed. Try again.
+          </p>
+        </>
+      }
+    />
   ),
 }

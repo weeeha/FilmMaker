@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Voice Changer/Spec" />
+
+# Voice Changer node — spec
+
+## Description
+
+The Voice Changer node transforms speech from a source audio file into a
+selected voice. It preserves the original performance's timing, emotion,
+accent, and delivery, including nuances such as whispers and laughter. The
+node outputs the transformed speech as audio.
+
+_Source: ElevenLabs Voice Changer._
+
+## Rules
+
+- The node has one audio input port and one audio output port.
+- An audio source must be connected before the node can run.
+- Model and target voice are set in the node menu.
+- It cannot be used as the starting node of a flow.
+- Its output must connect to a compatible audio input on another node.

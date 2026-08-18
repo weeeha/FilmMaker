@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Image Generation/Spec" />
+
+# Image Generation node — spec
+
+## Description
+
+The Image Generation node creates or edits images from a text prompt and,
+when supported by the selected model, visual references. Model-specific
+settings determine properties such as aspect ratio, resolution, and quality.
+The generated image can be passed to a compatible downstream node.
+
+_Adapted from ElevenLabs Image & Video to match the current implementation._
+
+## Rules
+
+- The node has an image reference input port and a text input port; the text port is aligned with the prompt input.
+- It has one image output port.
+- The prompt can be typed directly or supplied by an upstream text connection.
+- Model, aspect ratio, resolution, and quality are set in the node menu.
+- Its output must connect to a compatible image input on another node.

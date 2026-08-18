@@ -40,18 +40,20 @@ function RunButton({
         onClick={onRun}
         disabled={disabled || loading}
         aria-busy={loading}
+        aria-label={loading ? label : undefined}
         // 13px label from Figma (no matching --text token); --radius-sm = 6px
         // bg-clip-border paints over the base Button's transparent border so the
         // two segments join without a visible seam
+        // loading: the label and chevron give way to a spinner-only square
         className={cn(
-          "h-8 gap-1.5 rounded-sm bg-clip-border pl-4 pr-3 text-[13px]",
-          menu != null && "rounded-r-none"
+          "h-8 gap-1.5 rounded-sm bg-clip-border text-[13px]",
+          loading ? "w-8 p-0" : "pl-4 pr-3",
+          menu != null && !loading && "rounded-r-none"
         )}
       >
-        {loading && <Spinner className="size-3.5" aria-hidden="true" />}
-        {label}
+        {loading ? <Spinner className="size-3.5" aria-hidden="true" /> : label}
       </Button>
-      {menu != null && (
+      {menu != null && !loading && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
