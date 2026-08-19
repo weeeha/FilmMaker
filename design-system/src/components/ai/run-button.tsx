@@ -44,16 +44,19 @@ function RunButton({
         // 13px label from Figma (no matching --text token); --radius-sm = 6px
         // bg-clip-border paints over the base Button's transparent border so the
         // two segments join without a visible seam
-        // loading: the label and chevron give way to a spinner-only square
+        // loading: the spinner overlays the (hidden) label so the button keeps
+        // its exact size; the chevron segment stays
         className={cn(
-          "h-8 gap-1.5 rounded-sm bg-clip-border text-[13px]",
-          loading ? "w-8 p-0" : "pl-4 pr-3",
-          menu != null && !loading && "rounded-r-none"
+          "relative h-8 gap-1.5 rounded-sm bg-clip-border pl-4 pr-3 text-[13px]",
+          menu != null && "rounded-r-none"
         )}
       >
-        {loading ? <Spinner className="size-3.5" aria-hidden="true" /> : label}
+        <span className={loading ? "invisible" : undefined}>{label}</span>
+        {loading && (
+          <Spinner className="absolute inset-0 m-auto size-3.5" aria-hidden="true" />
+        )}
       </Button>
-      {menu != null && !loading && (
+      {menu != null && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
