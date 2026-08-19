@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Dubbing/Spec" />
+
+# Dubbing node — spec
+
+## Description
+
+The Dubbing node translates speech from a connected video source into a
+selected target language. It preserves each speaker's voice characteristics,
+emotion, timing, and tone while retaining the original background audio. The
+node outputs the dubbed video.
+
+_Adapted from ElevenLabs Dubbing to match the current implementation._
+
+## Rules
+
+- The node has one video input port and one video output port, both centered on the source area.
+- A source must be connected before the node can run.
+- The target language is chosen in the node menu.
+- It cannot be used as the starting node of a flow.
+- Its output must connect to a compatible video input on another node.

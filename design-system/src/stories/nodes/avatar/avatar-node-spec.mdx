@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Avatar/Spec" />
+
+# Avatar node — spec
+
+## Description
+
+The Avatar node produces a reusable avatar identity. The avatar is generated
+from a text description or selected from the library in the node menu, and is
+shown in the preview. The node outputs the avatar identity, which downstream
+nodes such as Lip Sync combine with speech audio to produce a talking-head
+video.
+
+_Adapted from ElevenLabs Avatars to match the current implementation._
+
+## Rules
+
+- The node has one text input port, aligned with the prompt input, and one avatar output port.
+- An avatar can be generated from the prompt or selected from the library in the node menu.
+- The header shows the active avatar.
+- Its output must connect to a compatible avatar input, e.g. the Lip Sync node.

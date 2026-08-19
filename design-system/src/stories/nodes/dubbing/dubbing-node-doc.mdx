@@ -1,0 +1,52 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './dubbing-node.stories'
+
+<Meta title="AI New/Node Cards/Dubbing/Documentation" />
+
+# Dubbing node
+
+The Dubbing node translates speech from a connected video source into a
+selected target language. It preserves each speaker's voice characteristics,
+emotion, timing, and tone while retaining the original background audio. The
+node outputs the dubbed video.
+
+_Adapted from ElevenLabs Dubbing to match the current implementation._
+
+## Anatomy
+
+Header with active model, source area (empty until a source is connected), Run row.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `video` — centered on the source area
+
+**Outputs**
+
+- `video` — centered on the source area
+
+## Node menu
+
+- Target language picker
+- Download, Delete, More actions
+
+## States
+
+### No Source
+
+<Canvas of={Stories.Default} />
+
+### Ready
+
+<Canvas of={Stories.Ready} />
+
+### Generating
+
+<Canvas of={Stories.Generating} />
+
+### Selected
+
+<Canvas of={Stories.Selected} />

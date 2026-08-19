@@ -1,0 +1,50 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './text-node.stories'
+
+<Meta title="AI New/Node Cards/Text/Documentation" />
+
+# Text node
+
+The Text node provides text input for prompts, scripts, and instructions. It
+does not generate or modify content. Instead, it passes the entered text to a
+compatible downstream node.
+
+## Anatomy
+
+Header (icon + name) with divider, borderless text area filling the card.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs** — none. This node starts a flow.
+
+**Outputs**
+
+- `text` — centered on the card, right edge
+
+## Node menu
+
+- Duplicate, Delete, and More actions (actions-only pill — the Text node has no model)
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.SelectedEmpty} />
+
+### Selected — Typing
+
+<Canvas of={Stories.SelectedTyping} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Disabled
+
+<Canvas of={Stories.Disabled} />

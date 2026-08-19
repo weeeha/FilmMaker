@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Sound Effects/Spec" />
+
+# Sound Effects node — spec
+
+## Description
+
+The Sound Effects node generates an audio effect from a text description. Its
+settings control the model and the duration of the generated effect. The node
+outputs an audio asset that can be passed to a compatible downstream node.
+
+_Adapted from ElevenLabs Sound Effects to match the current implementation._
+
+## Rules
+
+- The node has one text input port, aligned with the prompt input, and one audio output port.
+- Model and duration (or Auto) are set in the node menu.
+- The prompt can be typed directly or supplied by an upstream text connection.
+- Its output must connect to a compatible audio input on another node.

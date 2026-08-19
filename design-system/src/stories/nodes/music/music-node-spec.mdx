@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Music/Spec" />
+
+# Music node — spec
+
+## Description
+
+The Music node generates studio-grade music from a natural-language prompt.
+It can follow instructions describing genre, mood, instrumentation, tempo,
+structure, and vocals. The node outputs a complete audio track that can be
+passed to a compatible downstream node.
+
+_Source: ElevenLabs Music._
+
+## Rules
+
+- The node has an audio reference port centered on the preview strip, and two text ports aligned with the lyrics and prompt sections.
+- It has one audio output port, centered on the preview strip.
+- Lyrics are optional; when the switch is off the lyrics area is disabled.
+- Model and duration are set in the node menu.
+- Its output must connect to a compatible audio input on another node.

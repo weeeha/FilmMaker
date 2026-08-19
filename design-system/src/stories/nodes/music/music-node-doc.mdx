@@ -1,0 +1,71 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './music-node.stories'
+
+<Meta title="AI New/Node Cards/Music/Documentation" />
+
+# Music node
+
+The Music node generates studio-grade music from a natural-language prompt.
+It can follow instructions describing genre, mood, instrumentation, tempo,
+structure, and vocals. The node outputs a complete audio track that can be
+passed to a compatible downstream node.
+
+_Source: ElevenLabs Music._
+
+## Anatomy
+
+Header with active model, audio preview strip, lyrics section with on/off switch, prompt section with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `audio` — aligned with the preview strip
+- `text` — aligned with the lyrics section
+- `text` — aligned with the prompt section
+
+**Outputs**
+
+- `audio` — aligned with the preview strip
+
+## Node menu
+
+- Model picker — Music v2, Lyria 2
+- Duration (Auto, 0:30 … 3:00)
+- Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.SelectedEmpty} />
+
+### Selected — Typing
+
+<Canvas of={Stories.SelectedTyping} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Lyrics Off
+
+<Canvas of={Stories.LyricsOff} />
+
+### Generating — In Process
+
+<Canvas of={Stories.Generating} />
+
+### Generated
+
+<Canvas of={Stories.Generated} />
+
+### Generated — Error
+
+<Canvas of={Stories.GeneratedError} />

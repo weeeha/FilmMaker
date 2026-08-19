@@ -1,0 +1,67 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './lip-sync-node.stories'
+
+<Meta title="AI New/Node Cards/Lip Sync/Documentation" />
+
+# Lip Sync node
+
+The Lip Sync node synchronizes a connected avatar with speech audio. It
+animates mouth movements to match the provided speech, with an optional text
+prompt to guide the delivery. The node outputs a synchronized talking-head
+video.
+
+_Adapted from ElevenLabs Image & Video to match the current implementation._
+
+## Anatomy
+
+Header with active model, tall video preview, guidance prompt row with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `avatar` — centered on the preview
+- `sound` — centered on the preview
+- `text` — aligned with the prompt row
+
+**Outputs**
+
+- `video` — aligned with the preview top
+
+## Node menu
+
+- Model — Creatify Aurora, Sync Labs v2, HeyGen Avatar IV
+- Resolution (480p … 4K)
+- Download, Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.SelectedEmpty} />
+
+### Selected — Typing
+
+<Canvas of={Stories.SelectedTyping} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Generating — In Process
+
+<Canvas of={Stories.Generating} />
+
+### Generated
+
+<Canvas of={Stories.Generated} />
+
+### Generated — Error
+
+<Canvas of={Stories.GeneratedError} />

@@ -1,0 +1,65 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './avatar-node.stories'
+
+<Meta title="AI New/Node Cards/Avatar/Documentation" />
+
+# Avatar node
+
+The Avatar node produces a reusable avatar identity. The avatar is generated
+from a text description or selected from the library in the node menu, and is
+shown in the preview. The node outputs the avatar identity, which downstream
+nodes such as Lip Sync combine with speech audio to produce a talking-head
+video.
+
+_Adapted from ElevenLabs Avatars to match the current implementation._
+
+## Anatomy
+
+Header with active avatar, avatar preview, prompt row with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `text` — aligned with the prompt input
+
+**Outputs**
+
+- `avatar` — aligned with the preview top
+
+## Node menu
+
+- Avatar picker — Maya, Kai, Nova (searchable, with descriptions)
+- Download, Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.SelectedEmpty} />
+
+### Selected — Typing
+
+<Canvas of={Stories.SelectedTyping} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Generating — In Process
+
+<Canvas of={Stories.Generating} />
+
+### Generated
+
+<Canvas of={Stories.Generated} />
+
+### Generated — Error
+
+<Canvas of={Stories.GeneratedError} />

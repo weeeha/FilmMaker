@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Text/Spec" />
+
+# Text node — spec
+
+## Description
+
+The Text node provides text input for prompts, scripts, and instructions. It
+does not generate or modify content. Instead, it passes the entered text to a
+compatible downstream node.
+
+## Rules
+
+- The node has no input port and only one text output port.
+- It can only be used as the starting node of a flow.
+- It cannot be placed in the middle or at the end of a flow.
+- Its output must connect to a compatible input on another node.

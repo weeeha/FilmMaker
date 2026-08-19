@@ -1,0 +1,101 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Port/Spec" />
+
+# Node Port — sizes & spaces
+
+Spec for the connection port (Figma: "Port / *"). All port types share the same
+geometry; only the color treatment differs. Documented here for the **Text**
+and **Avatar** ports; the other blue ports match Avatar.
+
+## Shared geometry
+
+<table>
+  <thead>
+    <tr><th>Property</th><th>Value</th><th>Token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Port diameter</td><td>28 × 28 px</td><td><code>--spacing(7)</code></td></tr>
+    <tr><td>Shape</td><td>full circle</td><td><code>--radius-full</code></td></tr>
+    <tr><td>Border width</td><td>1 px</td><td>default border (no token)</td></tr>
+    <tr><td>Icon size</td><td>14 × 14 px</td><td><code>--spacing(3.5)</code></td></tr>
+    <tr><td>Icon inset</td><td>7 px all sides</td><td>derived — (28 − 14) / 2, icon centered</td></tr>
+    <tr><td>Icon stroke</td><td>2 units @ 24 viewBox ≈ 1.17 px rendered</td><td>lucide default</td></tr>
+    <tr><td>Shadow</td><td>0 / 1 / 1, black 6%</td><td><code>0px 1px 1px rgba(0,0,0,0.06)</code> — no shadow token</td></tr>
+  </tbody>
+</table>
+
+## Color treatments
+
+### Text port (neutral — the only non-blue base port)
+
+<table>
+  <thead>
+    <tr><th>Layer</th><th>Token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Fill</td><td><code>--color-white</code></td></tr>
+    <tr><td>Border</td><td><code>--color-neutral-300</code></td></tr>
+    <tr><td>Icon</td><td><code>--color-neutral-500</code></td></tr>
+  </tbody>
+</table>
+
+### Avatar port (standard blue, same as video / image / speech / 3D / frames)
+
+<table>
+  <thead>
+    <tr><th>Layer</th><th>Token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Fill</td><td><code>--color-blue-100</code></td></tr>
+    <tr><td>Border</td><td><code>--color-blue-200</code></td></tr>
+    <tr><td>Icon</td><td><code>--color-blue-600</code></td></tr>
+  </tbody>
+</table>
+
+### Sound & Audio ports (purple)
+
+<table>
+  <thead>
+    <tr><th>Layer</th><th>Token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Fill</td><td><code>--color-purple-100</code></td></tr>
+    <tr><td>Border</td><td><code>--color-purple-200</code></td></tr>
+    <tr><td>Icon</td><td><code>--color-purple-600</code></td></tr>
+  </tbody>
+</table>
+
+## Popover (name tooltip)
+
+Shown on hover above every port (`side="top"`), disable per instance with
+`tooltip={false}`.
+
+<table>
+  <thead>
+    <tr><th>Property</th><th>Value</th><th>Token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Offset from port</td><td>0 px</td><td><code>sideOffset=&#123;0&#125;</code></td></tr>
+    <tr><td>Arrow</td><td>10 px rotated square, 2 px radius</td><td><code>--spacing(2.5)</code></td></tr>
+    <tr><td>Padding</td><td>12 px / 6 px</td><td><code>--spacing(3)</code> / <code>--spacing(1.5)</code></td></tr>
+    <tr><td>Corner radius</td><td>6 px</td><td><code>--radius-md</code></td></tr>
+    <tr><td>Type size</td><td>12 px</td><td><code>--text-xs</code></td></tr>
+    <tr><td>Fill</td><td>near-black</td><td><code>--color-foreground</code></td></tr>
+    <tr><td>Text</td><td>white</td><td><code>--color-background</code></td></tr>
+  </tbody>
+</table>
+
+## Context spacing (All Ports overview)
+
+<table>
+  <thead>
+    <tr><th>Property</th><th>Value</th><th>Token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Gap between ports</td><td>16 px</td><td><code>--spacing(4)</code></td></tr>
+    <tr><td>Port → name label gap</td><td>8 px</td><td><code>--spacing(2)</code></td></tr>
+    <tr><td>Name label</td><td>12 px, muted, centered</td><td><code>--text-xs</code>, <code>--color-neutral-500</code></td></tr>
+    <tr><td>Label column width</td><td>56 px</td><td><code>--spacing(14)</code></td></tr>
+  </tbody>
+</table>

@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/LLM/Spec" />
+
+# LLM node — spec
+
+## Description
+
+The LLM node receives text input and uses a selected language model to
+generate a text response. It interprets the prompt and provided instructions
+to determine the content of the response. The generated text can be passed to
+a compatible downstream node.
+
+_Note: ElevenLabs does not currently provide a standalone public description
+of the LLM node in ElevenCreative Flows. This description is based on its
+documented LLM functionality in ElevenAgents._
+
+## Rules
+
+- The node has one text input port, aligned with the prompt input, and one text output port.
+- The prompt can be typed directly or supplied by an upstream Text or LLM node.
+- It can be placed anywhere in a flow where text is produced or consumed.
+- The model is chosen from the node menu; the header shows the active model.
+- Its output must connect to a compatible text input on another node.

@@ -1,237 +1,153 @@
-import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Play, TriangleAlert, Video } from 'lucide-react'
-import { expect, userEvent, within } from 'storybook/test'
-
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
-  AINode,
-  AINodeFooter,
-  AINodeHeader,
-  AINodePorts,
-  AINodePreview,
-  AINodePrompt,
-  AINodeTitle,
-} from '@/components/ai/ai-node'
-import { NodePort } from '@/components/ai/node-port'
-import { RunButton } from '@/components/ai/run-button'
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { Spinner } from '@/components/ui/spinner'
+  ReactFlowProvider,
+  type Edge as FlowEdge,
+  type Node as FlowNode,
+  type NodeProps as FlowNodeProps,
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
+import { CheckCircle2, ImageIcon, ListTree, MessageSquare } from "lucide-react";
+import type { ComponentType } from "react";
 
-const meta = {
-  title: 'AI New/Node',
-  component: AINode,
-  tags: ['autodocs'],
-  parameters: { layout: 'centered' },
-  decorators: [
-    // room for the ports floating outside the card
-    (Story) => (
-      <div className="px-16 py-6">
-        <Story />
-      </div>
-    ),
-  ],
-} satisfies Meta<typeof AINode>
+import { Canvas } from "@/components/ai-elements/canvas";
+import { Edge } from "@/components/ai-elements/edge";
+import {
+  Node,
+  NodeAction,
+  NodeContent,
+  NodeDescription,
+  NodeFooter,
+  NodeHeader,
+  NodeTitle,
+} from "@/components/ai-elements/node";
 
-export default meta
-type Story = StoryObj<typeof meta>
+/**
+ * Node is a Card-based custom node for @xyflow/react. It renders its own
+ * source/target Handles based on the `handles` prop and is composed from
+ * NodeHeader / NodeTitle / NodeDescription / NodeAction / NodeContent /
+ * NodeFooter. It is registered via ReactFlow's `nodeTypes`.
+ */
 
-const videoInputPorts = (
-  <AINodePorts side="input">
-    <NodePort type="speech" />
-    <NodePort type="audio" />
-    <NodePort type="image" />
-    <NodePort type="text" />
-  </AINodePorts>
-)
+type WorkflowData = {
+  icon: ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+  status: string;
+  body: string;
+  handles: { target: boolean; source: boolean };
+};
 
-const videoOutputPort = (
-  <AINodePorts side="output">
-    <NodePort type="video" />
-  </AINodePorts>
-)
+const WorkflowNode = ({ data }: FlowNodeProps) => {
+  const { icon: Icon, title, description, status, body, handles } =
+    data as unknown as WorkflowData;
+  return (
+    <Node handles={handles}>
+      <NodeHeader>
+        <NodeTitle className="flex items-center gap-2">
+          <Icon className="size-4 text-muted-foreground" />
+          {title}
+        </NodeTitle>
+        <NodeDescription>{description}</NodeDescription>
+        <NodeAction className="text-muted-foreground text-xs">
+          {status}
+        </NodeAction>
+      </NodeHeader>
+      <NodeContent>
+        <p className="text-muted-foreground text-sm">{body}</p>
+      </NodeContent>
+      <NodeFooter className="text-muted-foreground text-xs">
+        gpt-image-1 · 1.2s
+      </NodeFooter>
+    </Node>
+  );
+};
 
-const runMenu = (
-  <>
-    <DropdownMenuItem>Run this node</DropdownMenuItem>
-    <DropdownMenuItem>Run all nodes</DropdownMenuItem>
-  </>
-)
+const nodeTypes = { workflow: WorkflowNode };
+const edgeTypes = { animated: Edge.Animated };
 
-const emptyPreview = (
-  <>
-    <Video aria-hidden="true" className="size-6 text-neutral-300" />
-    <p className="text-[13px] text-neutral-400">Your generation will appear here</p>
-  </>
-)
+const nodes: FlowNode[] = [
+  {
+    id: "prompt",
+    type: "workflow",
+    position: { x: 0, y: 40 },
+    data: {
+      icon: MessageSquare,
+      title: "User prompt",
+      description: "Inbound request",
+      status: "done",
+      body: "“Create a poster for a jazz night and summarize the brief.”",
+      handles: { target: false, source: true },
+    },
+  },
+  {
+    id: "plan",
+    type: "workflow",
+    position: { x: 460, y: 0 },
+    data: {
+      icon: ListTree,
+      title: "Plan",
+      description: "Decompose into steps",
+      status: "done",
+      body: "1. Draft copy · 2. Generate artwork · 3. Compose layout.",
+      handles: { target: true, source: true },
+    },
+  },
+  {
+    id: "image",
+    type: "workflow",
+    position: { x: 460, y: 280 },
+    data: {
+      icon: ImageIcon,
+      title: "Generate image",
+      description: "Render artwork",
+      status: "running",
+      body: "Producing a 1024×1536 poster from the visual brief.",
+      handles: { target: true, source: true },
+    },
+  },
+  {
+    id: "review",
+    type: "workflow",
+    position: { x: 920, y: 140 },
+    data: {
+      icon: CheckCircle2,
+      title: "Review",
+      description: "Verify & finalize",
+      status: "queued",
+      body: "Validate the output against the original request.",
+      handles: { target: true, source: false },
+    },
+  },
+];
+
+const edges: FlowEdge[] = [
+  { id: "e1", source: "prompt", target: "plan", type: "animated" },
+  { id: "e2", source: "prompt", target: "image", type: "animated" },
+  { id: "e3", source: "plan", target: "review", type: "animated" },
+  { id: "e4", source: "image", target: "review", type: "animated" },
+];
+
+const meta: Meta<typeof Node> = {
+  title: "AI/Node",
+  component: Node,
+  tags: ["autodocs"],
+  parameters: { layout: "fullscreen" },
+};
+
+export default meta;
+type Story = StoryObj<typeof Node>;
 
 export const Default: Story = {
   render: () => (
-    <AINode>
-      <AINodeHeader>
-        <AINodeTitle>
-          <Video aria-hidden="true" />
-          Video
-        </AINodeTitle>
-      </AINodeHeader>
-      <AINodePreview>{emptyPreview}</AINodePreview>
-      <AINodeFooter>
-        <AINodePrompt placeholder="Describe your video..." />
-        <RunButton menu={runMenu} />
-      </AINodeFooter>
-      {videoInputPorts}
-      {videoOutputPort}
-    </AINode>
-  ),
-}
-
-export const Selected: Story = {
-  render: () => (
-    <AINode selected>
-      <AINodeHeader>
-        <AINodeTitle>
-          <Video aria-hidden="true" />
-          Video
-        </AINodeTitle>
-      </AINodeHeader>
-      <AINodePreview>{emptyPreview}</AINodePreview>
-      <AINodeFooter>
-        <AINodePrompt placeholder="Describe your video..." />
-        <RunButton menu={runMenu} />
-      </AINodeFooter>
-      {videoInputPorts}
-      {videoOutputPort}
-    </AINode>
-  ),
-}
-
-export const TypingDescription: Story = {
-  render: () => (
-    <AINode selected>
-      <AINodeHeader>
-        <AINodeTitle>
-          <Video aria-hidden="true" />
-          Video
-        </AINodeTitle>
-      </AINodeHeader>
-      <AINodePreview>{emptyPreview}</AINodePreview>
-      <AINodeFooter>
-        <AINodePrompt placeholder="Describe your video..." />
-        <RunButton menu={runMenu} />
-      </AINodeFooter>
-      {videoInputPorts}
-      {videoOutputPort}
-    </AINode>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-    const prompt = canvas.getByRole('textbox', { name: 'Prompt' })
-    await userEvent.type(prompt, 'A slow cinematic drone shot over a foggy forest')
-    await expect(prompt).toHaveValue('A slow cinematic drone shot over a foggy forest')
-  },
-}
-
-export const Generating: Story = {
-  render: () => (
-    <AINode>
-      <AINodeHeader>
-        <AINodeTitle>
-          <Video aria-hidden="true" />
-          Video
-        </AINodeTitle>
-      </AINodeHeader>
-      <AINodePreview>
-        <Spinner className="size-6 text-neutral-400" />
-        <p className="text-[13px] text-neutral-400">Generating…</p>
-      </AINodePreview>
-      <AINodeFooter>
-        <AINodePrompt
-          placeholder="Describe your video..."
-          defaultValue="A slow cinematic drone shot over a foggy forest"
-          disabled
+    <div style={{ width: "100%", height: 520 }}>
+      <ReactFlowProvider>
+        <Canvas
+          edgeTypes={edgeTypes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          nodes={nodes}
         />
-        <RunButton loading menu={runMenu} />
-      </AINodeFooter>
-      {videoInputPorts}
-      {videoOutputPort}
-    </AINode>
+      </ReactFlowProvider>
+    </div>
   ),
-}
-
-export const Result: Story = {
-  render: () => (
-    <AINode>
-      <AINodeHeader>
-        <AINodeTitle>
-          <Video aria-hidden="true" />
-          Video
-        </AINodeTitle>
-      </AINodeHeader>
-      <AINodePreview>
-        {/* stand-in for the generated clip */}
-        <div
-          role="img"
-          aria-label="Generated video preview"
-          className="flex size-full items-center justify-center bg-linear-to-br from-neutral-700 to-neutral-500"
-        >
-          <Play aria-hidden="true" className="size-8 text-white/90" />
-        </div>
-      </AINodePreview>
-      <AINodeFooter>
-        <AINodePrompt
-          placeholder="Describe your video..."
-          defaultValue="A slow cinematic drone shot over a foggy forest"
-        />
-        <RunButton menu={runMenu} />
-      </AINodeFooter>
-      {videoInputPorts}
-      {videoOutputPort}
-    </AINode>
-  ),
-}
-
-export const Error: Story = {
-  render: () => (
-    <AINode>
-      <AINodeHeader>
-        <AINodeTitle>
-          <Video aria-hidden="true" />
-          Video
-        </AINodeTitle>
-      </AINodeHeader>
-      <AINodePreview>
-        <TriangleAlert aria-hidden="true" className="size-6 text-destructive" />
-        <p role="status" className="text-[13px] text-destructive">
-          Generation failed. Try again.
-        </p>
-      </AINodePreview>
-      <AINodeFooter>
-        <AINodePrompt
-          placeholder="Describe your video..."
-          defaultValue="A slow cinematic drone shot over a foggy forest"
-        />
-        <RunButton label="Retry" menu={runMenu} />
-      </AINodeFooter>
-      {videoInputPorts}
-      {videoOutputPort}
-    </AINode>
-  ),
-}
-
-export const Disabled: Story = {
-  render: () => (
-    <AINode className="opacity-60">
-      <AINodeHeader>
-        <AINodeTitle>
-          <Video aria-hidden="true" />
-          Video
-        </AINodeTitle>
-      </AINodeHeader>
-      <AINodePreview>{emptyPreview}</AINodePreview>
-      <AINodeFooter>
-        <AINodePrompt placeholder="Describe your video..." disabled />
-        <RunButton disabled menu={runMenu} />
-      </AINodeFooter>
-      {videoInputPorts}
-      {videoOutputPort}
-    </AINode>
-  ),
-}
+};

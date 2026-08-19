@@ -1,0 +1,72 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './video-generation-node.stories'
+
+<Meta title="AI New/Node Cards/Video Generation/Documentation" />
+
+# Video Generation node
+
+The Video Generation node creates dynamic video clips from a text prompt and
+optional visual references. Depending on the selected model, it can generate
+a video from text, animate an existing image, and produce synchronized audio.
+The generated video can be passed to a compatible downstream node.
+
+_Source: ElevenLabs Image & Video._
+
+## Anatomy
+
+Header with active model, video preview, prompt row with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `speech` — centered on the preview
+- `audio` — centered on the preview
+- `image` — centered on the preview
+- `text` — aligned with the prompt input
+
+**Outputs**
+
+- `video` — aligned with the preview top
+
+## Node menu
+
+- Model picker — Veo 3.1 Fast, Seedance 2.0, Gemini Omni Flash
+- Aspect Ratio, Resolution (480p … 4K), Duration (4s … 15s), Sound on/off
+- Download, Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.Selected} />
+
+### Selected — Typing
+
+<Canvas of={Stories.TypingDescription} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Generating — In Process
+
+<Canvas of={Stories.Generating} />
+
+### Generated
+
+<Canvas of={Stories.Generated} />
+
+### Generated — Error
+
+<Canvas of={Stories.GeneratedError} />
+
+### Disabled
+
+<Canvas of={Stories.Disabled} />

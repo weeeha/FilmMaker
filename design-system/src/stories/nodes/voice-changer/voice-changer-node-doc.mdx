@@ -1,0 +1,65 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+
+import * as Stories from './voice-changer-node.stories'
+
+<Meta title="AI New/Node Cards/Voice Changer/Documentation" />
+
+# Voice Changer node
+
+The Voice Changer node transforms speech from a source audio file into a
+selected voice. It preserves the original performance's timing, emotion,
+accent, and delivery, including nuances such as whispers and laughter. The
+node outputs the transformed speech as audio.
+
+_Source: ElevenLabs Voice Changer._
+
+## Anatomy
+
+Header with active model, audio preview, target-voice prompt row with Run.
+Below the card sits the node menu pill with the node's settings and actions.
+
+## Ports
+
+**Inputs**
+
+- `audio` — centered on the card, left edge
+
+**Outputs**
+
+- `audio` — aligned with the preview top
+
+## Node menu
+
+- Model picker — Eleven v3, Eleven Multilingual v2
+- Voice (Rachel, Adam, Bella, Josh)
+- Download, Delete, More actions
+
+## States
+
+### Default
+
+<Canvas of={Stories.Default} />
+
+### Selected — Empty
+
+<Canvas of={Stories.SelectedEmpty} />
+
+### Selected — Typing
+
+<Canvas of={Stories.SelectedTyping} />
+
+### Selected — Filled
+
+<Canvas of={Stories.SelectedFilled} />
+
+### Generating — In Process
+
+<Canvas of={Stories.Generating} />
+
+### Generated
+
+<Canvas of={Stories.Generated} />
+
+### Generated — Error
+
+<Canvas of={Stories.GeneratedError} />

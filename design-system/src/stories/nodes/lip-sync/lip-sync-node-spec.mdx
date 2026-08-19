@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Lip Sync/Spec" />
+
+# Lip Sync node — spec
+
+## Description
+
+The Lip Sync node synchronizes a connected avatar with speech audio. It
+animates mouth movements to match the provided speech, with an optional text
+prompt to guide the delivery. The node outputs a synchronized talking-head
+video.
+
+_Adapted from ElevenLabs Image & Video to match the current implementation._
+
+## Rules
+
+- The node has avatar and audio input ports, centered on the preview, plus a text guidance port aligned with the prompt row.
+- It has one video output port, aligned with the preview top.
+- Both an avatar and an audio source must be connected before the node can run.
+- Model and resolution are set in the node menu.
+- Its output must connect to a compatible video input on another node.

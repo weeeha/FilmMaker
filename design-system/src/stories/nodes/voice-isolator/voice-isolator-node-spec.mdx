@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Node Cards/Voice Isolator/Spec" />
+
+# Voice Isolator node — spec
+
+## Description
+
+The Voice Isolator node extracts speech from a connected audio input and
+removes background noise, music, and ambient sounds. It produces clean,
+studio-quality speech while preserving the spoken content. The cleaned audio
+can be passed to a compatible downstream node.
+
+_Adapted from ElevenLabs Voice Isolator to match the current implementation._
+
+## Rules
+
+- The node has one audio input port and one audio output port.
+- An audio source must be connected before the node can run.
+- The prompt row is disabled — the node takes no text input.
+- It cannot be used as the starting node of a flow.
+- Its output must connect to a compatible audio input on another node.
