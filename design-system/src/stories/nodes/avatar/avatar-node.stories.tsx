@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DownloadIcon, EllipsisIcon, Trash2Icon, TriangleAlert } from 'lucide-react'
+import { TriangleAlert } from 'lucide-react'
 import { expect, userEvent, within } from 'storybook/test'
 
 import {
@@ -13,11 +13,11 @@ import {
   AINodeTitle,
 } from '@/components/ai/ai-node'
 import { AvatarSparkleIcon } from '@/components/ai/avatar-sparkle-icon'
-import { NodeMenu, NodeMenuAction, NodeMenuSeparator } from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
-import { DemoRunButton, ModelPicker } from '../shared'
+import { DemoRunButton } from '../shared'
+import { AvatarNodeMenu } from '../menus'
 
 const meta = {
   title: 'AI New/Node Cards/Avatar/States',
@@ -64,44 +64,6 @@ const emptyPreview = (
   </>
 )
 
-const AvatarNodeMenu = () => (
-  <NodeMenu aria-label="Avatar node settings">
-    <ModelPicker
-      heading="Avatars"
-      defaultValue="maya"
-      models={[
-        {
-          value: 'maya',
-          name: 'Maya',
-          description: 'Warm presenter, studio lighting.',
-          icon: <AvatarSparkleIcon />,
-        },
-        {
-          value: 'kai',
-          name: 'Kai',
-          description: 'Casual explainer, outdoor scenes.',
-          icon: <AvatarSparkleIcon />,
-        },
-        {
-          value: 'nova',
-          name: 'Nova',
-          description: 'Editorial look, high contrast.',
-          icon: <AvatarSparkleIcon />,
-        },
-      ]}
-    />
-    <NodeMenuSeparator />
-    <NodeMenuAction aria-label="Download">
-      <DownloadIcon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="Delete">
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions">
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
-)
 
 const header = (
   <AINodeHeader>

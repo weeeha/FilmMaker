@@ -26,8 +26,13 @@ const preview: Preview = {
           'AI New',
           [
             'Node Menu',
+            // Spec sits next to States so it lands above the States > Docs page
             'Node Port',
+            ['Spec', 'States'],
             'Run Button',
+            ['Spec', 'States'],
+            'Cost Tooltip',
+            ['Spec', 'States'],
             'Node Cards',
             [
               'Text',

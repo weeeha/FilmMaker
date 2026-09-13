@@ -1,0 +1,156 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Cost Tooltip/Spec" />
+
+# Cost Tooltip — spec
+
+## Description
+
+Explains what a run will spend, shown on hovering the control that starts it.
+Built on the shared Tooltip, so fill, radius and label size follow the design
+system. Today its only consumer is the Run Button, where it wraps the primary
+segment.
+
+## Types
+
+<table>
+  <thead>
+    <tr><th>Type</th><th>Prop</th><th>Text</th><th>Use when</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Free</td>
+      <td><code>cost=&#123;0&#125;</code></td>
+      <td>This run will cost 0 credits</td>
+      <td>The run spends nothing — a cached result, a free tier, or a node that costs nothing to re-run.</td>
+    </tr>
+    <tr>
+      <td>Charged</td>
+      <td><code>cost=&#123;2950&#125;</code></td>
+      <td>This run will cost 2,950 credits</td>
+      <td>The run spends credits.</td>
+    </tr>
+  </tbody>
+</table>
+
+The type is derived from the number, never passed by hand. Each tooltip carries
+it as `data-type="free" | "charged"` for styling and tests.
+
+## Content
+
+- Thousands are grouped: `2950` reads as `2,950`.
+- `1` is singular: "This run will cost 1 credit".
+- State the number. Do not replace it with words such as "free", "cheap" or
+  "some credits".
+
+## Sizes & colors
+
+Inherited from the shared Tooltip — no local overrides.
+
+<table>
+  <thead>
+    <tr><th>Property</th><th>Value</th><th>Token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Padding</td><td>12 px / 6 px</td><td><code>--spacing(3)</code> / <code>--spacing(1.5)</code></td></tr>
+    <tr><td>Corner radius</td><td>6 px</td><td><code>--radius-md</code></td></tr>
+    <tr><td>Label size</td><td>12 px</td><td><code>--text-xs</code></td></tr>
+    <tr><td>Fill</td><td>near-black</td><td><code>--color-foreground</code></td></tr>
+    <tr><td>Text</td><td>white</td><td><code>--color-background</code></td></tr>
+    <tr><td>Placement</td><td>above the trigger</td><td><code>side="top"</code></td></tr>
+  </tbody>
+</table>
+
+## Application
+
+How tooltips are attached across the design system.
+
+### Where they attach
+
+The tooltip wraps the control itself — the trigger renders `asChild`, so no
+extra wrapper element appears in the DOM and the control keeps its own
+semantics, focus and hit area.
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Trigger</th><th>Content</th><th>Placement</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Node Port</td>
+      <td>The port circle</td>
+      <td>Port name — "Video", "Start frame"</td>
+      <td><code>side="top"</code></td>
+    </tr>
+    <tr>
+      <td>Run Button</td>
+      <td>The primary Run segment only</td>
+      <td>Run cost — "This run will cost 2,950 credits"</td>
+      <td><code>side="top"</code></td>
+    </tr>
+  </tbody>
+</table>
+
+### One control, one tooltip
+
+- A tooltip describes exactly one control. On a split control it attaches to
+  one segment; the other segment gets its own tooltip or none.
+- Never wrap a group, a row or a card in a single tooltip.
+- Two tooltips must not be open at once — they share one provider, so opening
+  the next closes the previous.
+
+### When they appear
+
+- On pointer hover and on keyboard focus of the trigger. Both come from the
+  shared provider — do not re-implement either.
+- Delay is `0`: the provider is mounted once at the app root
+  (`TooltipProvider` in `preview.tsx` for Storybook). A component that renders
+  a tooltip must not mount its own provider.
+- They close on pointer leave, blur, `Escape`, and on scroll or any change that
+  moves the trigger.
+- A tooltip never takes focus and never traps it.
+
+### What goes inside
+
+- One short, factual line. No headings, lists or line breaks.
+- No interactive content — no links, buttons or form controls. If the content
+  needs interaction, use a Popover; if it needs a decision, use a Dialog.
+- Do not repeat a label that is already visible next to the control. Tooltips
+  belong on icon-only or value-only controls, or where the extra fact is not
+  otherwise on screen.
+- Never put information required to complete the task only in a tooltip — it is
+  invisible on touch and to anyone who does not hover.
+
+### Content that is a name vs a fact
+
+- **Name** — what the control is, when the control shows only an icon
+  (Node Port). Sentence case, no trailing period.
+- **Fact** — a consequence of using the control, such as a price
+  (Run Button cost). Full sentence, no trailing period.
+
+### States
+
+- Disabled controls receive no pointer events, so their tooltip does not open.
+  If the reason for being disabled must be explained, put it next to the
+  control instead.
+- A loading control keeps its tooltip: the cost of the run in progress is still
+  the truth.
+
+### Placement
+
+- Default `side="top"`. Flip only when the trigger sits at the top edge of the
+  canvas or viewport.
+- Placement is per trigger, never per screen: a port at the left edge keeps
+  `top`, it does not switch to `right` to save space.
+- The tooltip follows the layout direction — nothing extra is needed for RTL.
+
+---
+
+## Rules
+
+- The tooltip describes one control. On a split button it belongs to the
+  primary segment only — hovering the dropdown trigger must not show it.
+- Omit `cost` and no tooltip is rendered at all.
+- It is informational. It must not be the only place a price is shown before an
+  expensive run.
+- `defaultOpen` exists to document the tooltip at rest. Do not ship it.

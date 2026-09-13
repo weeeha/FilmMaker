@@ -1,18 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
-  DownloadIcon,
-  EllipsisIcon,
   Images,
   Plus,
-  Trash2Icon,
   Video,
   Volume2,
 } from 'lucide-react'
 
 import { AINode, AINodeHeader, AINodePorts, AINodePreview, AINodeTitle } from '@/components/ai/ai-node'
-import { NodeMenu, NodeMenuAction, NodeMenuSeparator } from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
 import { DemoRunButton } from '../shared'
+import { CompositionNodeMenu } from '../menus'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -84,20 +81,6 @@ const Track = ({ children }: { children?: React.ReactNode }) => (
   </div>
 )
 
-const CompositionNodeMenu = () => (
-  <NodeMenu aria-label="Composition node actions">
-    <NodeMenuAction aria-label="Download">
-      <DownloadIcon />
-    </NodeMenuAction>
-    <NodeMenuSeparator />
-    <NodeMenuAction aria-label="Delete">
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions">
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
-)
 
 const ports = (
   <>

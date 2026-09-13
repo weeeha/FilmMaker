@@ -1,21 +1,12 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { AudioLines, CheckIcon, ChevronsUpDown, EllipsisIcon, SlidersHorizontal, Trash2Icon, TriangleAlert, Volume2 } from 'lucide-react'
+import { AudioLines, CheckIcon, ChevronsUpDown, SlidersHorizontal, TriangleAlert, Volume2 } from 'lucide-react'
 import { expect, userEvent, within } from 'storybook/test'
 
 import { AINode, AINodeHeader, AINodeMeta, AINodePorts, AINodePreview, AINodeTitle } from '@/components/ai/ai-node'
-import {
-  NodeMenu,
-  NodeMenuAction,
-  NodeMenuSelect,
-  NodeMenuSelectContent,
-  NodeMenuSelectGroup,
-  NodeMenuSelectItem,
-  NodeMenuSelectTrigger,
-  NodeMenuSeparator,
-} from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
 import { DemoRunButton } from '../shared'
+import { SpeechNodeMenu } from '../menus'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -107,43 +98,6 @@ const VoiceSelect = () => {
     </DropdownMenu>
   )
 }
-
-const ModelSelect = () => {
-  const [model, setModel] = useState('Eleven Multilingual v2')
-  return (
-    <NodeMenuSelect>
-      <NodeMenuSelectTrigger aria-label="Model" chevron>
-        {model}
-      </NodeMenuSelectTrigger>
-      <NodeMenuSelectContent label="Model">
-        <NodeMenuSelectGroup value={model} onValueChange={setModel}>
-          {[
-            'Eleven Multilingual v2',
-            'Eleven Turbo v2.5',
-            'Eleven Flash v2.5',
-          ].map((option) => (
-            <NodeMenuSelectItem key={option} value={option}>
-              {option}
-            </NodeMenuSelectItem>
-          ))}
-        </NodeMenuSelectGroup>
-      </NodeMenuSelectContent>
-    </NodeMenuSelect>
-  )
-}
-
-const SpeechNodeMenu = () => (
-  <NodeMenu aria-label="Text to Speech node settings">
-    <ModelSelect />
-    <NodeMenuSeparator />
-    <NodeMenuAction aria-label="Delete">
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions">
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
-)
 
 const header = (
   <AINodeHeader>

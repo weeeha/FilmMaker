@@ -1,21 +1,12 @@
-import { useState } from 'react'
+import { } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DownloadIcon, EllipsisIcon, Trash2Icon, TriangleAlert, UserRound, Video } from 'lucide-react'
+import { TriangleAlert, UserRound, Video } from 'lucide-react'
 import { expect, userEvent, within } from 'storybook/test'
 
 import { AINode, AINodeHeader, AINodeMeta, AINodePorts, AINodePreview, AINodeTitle } from '@/components/ai/ai-node'
-import {
-  NodeMenu,
-  NodeMenuAction,
-  NodeMenuSelect,
-  NodeMenuSelectContent,
-  NodeMenuSelectGroup,
-  NodeMenuSelectItem,
-  NodeMenuSelectTrigger,
-  NodeMenuSeparator,
-} from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
 import { DemoRunButton } from '../shared'
+import { LipSyncNodeMenu } from '../menus'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -42,61 +33,6 @@ const runMenu = (
     <DropdownMenuItem>Run this node</DropdownMenuItem>
     <DropdownMenuItem>Run all nodes</DropdownMenuItem>
   </>
-)
-
-const ModelSelect = () => {
-  const [model, setModel] = useState('Creatify Aurora')
-  return (
-    <NodeMenuSelect>
-      <NodeMenuSelectTrigger aria-label="Model" chevron>
-        {model}
-      </NodeMenuSelectTrigger>
-      <NodeMenuSelectContent label="Model">
-        <NodeMenuSelectGroup value={model} onValueChange={setModel}>
-          {['Creatify Aurora', 'Sync Labs v2', 'HeyGen Avatar IV'].map((option) => (
-            <NodeMenuSelectItem key={option} value={option}>
-              {option}
-            </NodeMenuSelectItem>
-          ))}
-        </NodeMenuSelectGroup>
-      </NodeMenuSelectContent>
-    </NodeMenuSelect>
-  )
-}
-
-const ResolutionSelect = () => {
-  const [value, setValue] = useState('720p')
-  return (
-    <NodeMenuSelect>
-      <NodeMenuSelectTrigger aria-label="Resolution">{value}</NodeMenuSelectTrigger>
-      <NodeMenuSelectContent label="Resolution">
-        <NodeMenuSelectGroup value={value} onValueChange={setValue}>
-          {['480p', '720p', '1080p', '4K'].map((option) => (
-            <NodeMenuSelectItem key={option} value={option}>
-              {option}
-            </NodeMenuSelectItem>
-          ))}
-        </NodeMenuSelectGroup>
-      </NodeMenuSelectContent>
-    </NodeMenuSelect>
-  )
-}
-
-const LipSyncNodeMenu = () => (
-  <NodeMenu aria-label="Lip Sync node settings">
-    <ModelSelect />
-    <ResolutionSelect />
-    <NodeMenuSeparator />
-    <NodeMenuAction aria-label="Download">
-      <DownloadIcon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="Delete">
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions">
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
 )
 
 const header = (

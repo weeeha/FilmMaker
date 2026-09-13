@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { AudioLines, DownloadIcon, EllipsisIcon, Music, Trash2Icon, TriangleAlert, ZapIcon } from 'lucide-react'
+import { AudioLines, Music, TriangleAlert } from 'lucide-react'
 import { expect, userEvent, within } from 'storybook/test'
 
 import {
@@ -13,8 +13,8 @@ import {
   AINodeTitle,
 } from '@/components/ai/ai-node'
 import { NodePort } from '@/components/ai/node-port'
-import { NodeMenu, NodeMenuAction, NodeMenuSeparator } from '@/components/ai/node-menu'
-import { DemoRunButton, ModelPicker, OptionSelect } from '../shared'
+import { DemoRunButton } from '../shared'
+import { SoundEffectsNodeMenu } from '../menus'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -63,43 +63,6 @@ const emptyPreview = (
   </>
 )
 
-const SoundEffectsNodeMenu = () => (
-  <NodeMenu aria-label="Sound effects node settings">
-    <ModelPicker
-      heading="Audio models"
-      defaultValue="lyria-2"
-      models={[
-        {
-          value: 'lyria-2',
-          name: 'Lyria 2',
-          description: 'Rich, layered sound design from text.',
-          icon: <AudioLines />,
-        },
-        {
-          value: 'eleven-sfx',
-          name: 'Eleven SFX',
-          description: 'Short, punchy effects with precise timing.',
-          icon: <ZapIcon />,
-        },
-      ]}
-    />
-    <OptionSelect
-      label="Duration"
-      options={['Auto', '1s', '5s', '10s', '22s']}
-      defaultValue="Auto"
-    />
-    <NodeMenuSeparator />
-    <NodeMenuAction aria-label="Download">
-      <DownloadIcon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="Delete">
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions">
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
-)
 
 const SoundEffectsNode = ({
   selected = false,
