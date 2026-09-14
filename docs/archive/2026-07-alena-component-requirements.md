@@ -1,7 +1,9 @@
+> Superseded on 2026-09-13 by [design-system.md](../design-system.md). Kept unchanged for history apart from repointed sibling links.
+
 # AI Component Requirements — Design System Bridge
 
 **Status:** Draft v1 · July 2026
-**Related:** [mvp-requirements.md](alena-mvp-requirements.md) · [product-vision.md](alena-product-vision.md)
+**Related:** [mvp-requirements.md](2026-07-alena-mvp-requirements.md) · [product-vision.md](2026-07-alena-product-vision.md)
 
 FilmMaker is developed in parallel with an **AI design system** built on **shadcn/ui + Tailwind**. This document lists the components the MVP requires that shadcn does not provide out of the box. Building FilmMaker is how we discover, validate, and prioritize these components; each one is designed here and contributed to the design system as a reusable, themeable component using standard shadcn CSS variables.
 
@@ -86,5 +88,5 @@ Every component must support a **simple mode and an advanced mode** (ElevenLabs-
 
 ## Notes
 
-- Reference tools studied so far: ElevenLabs studio (flow simplicity, voices grid, TTS editor), ComfyUI (professional node power, execution toolbar above nodes, per-node and global run), Chinese generation suites (alternative generation-panel layouts — settings as tabs vs. dropdowns, panel centered vs. docked bottom). Functionally these tools converge; differentiation is in clarity, cost transparency, and theming. The full research set — one flagship per app type — lives in [alena-reference-products.md](alena-reference-products.md).
+- Reference tools studied so far: ElevenLabs studio (flow simplicity, voices grid, TTS editor), ComfyUI (professional node power, execution toolbar above nodes, per-node and global run), Chinese generation suites (alternative generation-panel layouts — settings as tabs vs. dropdowns, panel centered vs. docked bottom). Functionally these tools converge; differentiation is in clarity, cost transparency, and theming. The full research set — one flagship per app type — lives in [alena-reference-products.md](../reference-products.md).
 - Each component ships with: all interactive states, light/dark themes, simple/advanced modes where applicable, and documented props — so it can be reused beyond FilmMaker in future AI tools.

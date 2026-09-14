@@ -1,3 +1,5 @@
+> Superseded on 2026-09-13 by [roadmap.md](../roadmap.md). Kept unchanged for history.
+
 # Film Planner — POC Implementation Plan
 
 **Status:** Phase 0 complete. Ready to run.

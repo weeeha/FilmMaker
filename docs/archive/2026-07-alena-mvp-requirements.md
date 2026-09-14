@@ -1,10 +1,12 @@
+> Superseded on 2026-09-13 by [system-design.md](../system-design.md). Kept unchanged for history apart from repointed sibling links.
+
 # FilmMaker — MVP Feature Requirements
 
 **Status:** Draft v1 · July 2026
 **Scope owner:** Product (Nick) · **Design:** Design system & components
-**Related:** [product-vision.md](alena-product-vision.md) · [component-requirements.md](alena-component-requirements.md) · [roadmap.md](alena-roadmap.md)
+**Related:** [product-vision.md](2026-07-alena-product-vision.md) · [component-requirements.md](2026-07-alena-component-requirements.md) · [roadmap.md](2026-07-alena-roadmap.md)
 
-The MVP covers six areas. These are **feature requirements** (what must be possible), not a component list — components are derived in [component-requirements.md](alena-component-requirements.md).
+The MVP covers six areas. These are **feature requirements** (what must be possible), not a component list — components are derived in [component-requirements.md](2026-07-alena-component-requirements.md).
 
 Priority order for design and build: the **Video Generator flow builder is first and foremost**; libraries are structurally simpler and come later within the MVP.
 

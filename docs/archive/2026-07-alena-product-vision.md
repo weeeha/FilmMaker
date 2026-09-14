@@ -1,3 +1,5 @@
+> Superseded on 2026-09-13 by [vision.md](../vision.md). Kept unchanged for history apart from repointed sibling links.
+
 # FilmMaker — Product Vision
 
 **Status:** Draft v1 · July 2026
@@ -56,6 +58,6 @@ Learned from working hands-on with existing tools:
 
 ## Strategic context: the design system
 
-FilmMaker is developed in parallel with an **AI design system** project. Building the app is the discovery mechanism for the design system: every interface pattern FilmMaker needs that shadcn/ui does not provide (node canvases, generation panels, media galleries, model pickers…) is designed here and contributed there as a reusable, themeable component. See [component-requirements.md](alena-component-requirements.md).
+FilmMaker is developed in parallel with an **AI design system** project. Building the app is the discovery mechanism for the design system: every interface pattern FilmMaker needs that shadcn/ui does not provide (node canvases, generation panels, media galleries, model pickers…) is designed here and contributed there as a reusable, themeable component. See [component-requirements.md](2026-07-alena-component-requirements.md).
 
 The build process itself is documented as a public case study: creating an AI product end-to-end — design system, components, user testing.
