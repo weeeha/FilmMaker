@@ -1,7 +1,9 @@
+> Moved into the new doc set on 2026-09-13. Links updated to point to [vision.md](vision.md), [system-design.md](system-design.md), and [design-system.md](design-system.md).
+
 # Reference Products — Design Research
 
 **Author:** Alena · **Status:** Draft v1 · July 2026
-**Related:** [alena-component-requirements.md](alena-component-requirements.md) · [alena-product-vision.md](alena-product-vision.md)
+**Related:** [design-system.md](design-system.md) · [vision.md](vision.md)
 
 One flagship product per app type, chosen through a **differentiation** lens: these are the products whose interface patterns set the bar for the components FilmMaker needs. Screenshots and teardown notes from these apps feed the sketch → Claude → shadcn component workflow.
 
@@ -18,7 +20,7 @@ One flagship product per app type, chosen through a **differentiation** lens: th
 
 ## What to study in each
 
-Mapped to the component groups in [alena-component-requirements.md](alena-component-requirements.md):
+Mapped to the component groups in [design-system.md](design-system.md):
 
 | Flagship | Component groups | Patterns to capture |
 |---|---|---|

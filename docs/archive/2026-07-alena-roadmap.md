@@ -1,7 +1,9 @@
+> Superseded on 2026-09-13 by [roadmap.md](../roadmap.md). Kept unchanged for history apart from repointed sibling links.
+
 # FilmMaker — Roadmap
 
 **Status:** Draft v1 · July 2026
-**Related:** [product-vision.md](alena-product-vision.md) · [mvp-requirements.md](alena-mvp-requirements.md) · [component-requirements.md](alena-component-requirements.md)
+**Related:** [product-vision.md](2026-07-alena-product-vision.md) · [mvp-requirements.md](2026-07-alena-mvp-requirements.md) · [component-requirements.md](2026-07-alena-component-requirements.md)
 
 Two tracks run in parallel and feed each other:
 
@@ -21,7 +23,7 @@ Goal: reliably produce components with the Claude + shadcn workflow before mass-
 
 ## Phase 1 — AI component library (MVP set)
 
-Goal: build the priority components from [component-requirements.md](alena-component-requirements.md).
+Goal: build the priority components from [component-requirements.md](2026-07-alena-component-requirements.md).
 
 - [ ] Flow builder set (canvas, node card, ports/edges, run controls) — *first and foremost*.
 - [ ] Generation panel family (prompt bar, reference strip, model picker, dynamic settings, cost badge).
@@ -33,7 +35,7 @@ Goal: build the priority components from [component-requirements.md](alena-compo
 
 ## Phase 2 — FilmMaker MVP
 
-Goal: the six MVP areas from [mvp-requirements.md](alena-mvp-requirements.md), built on the component library.
+Goal: the six MVP areas from [mvp-requirements.md](2026-07-alena-mvp-requirements.md), built on the component library.
 
 Suggested build order:
 
@@ -49,9 +51,9 @@ Suggested build order:
 - Direct model API integrations / open-source models to cut generation costs.
 - Marketplace features in libraries (buy music/voices).
 - Richer video editor.
-- Cloud persistence & auth (Vercel Blob / Postgres / Clerk — see [plan.md](plan.md) Phase 3) and multi-device.
+- Cloud persistence & auth (Vercel Blob / Postgres / Clerk — see [plan.md](plan-poc-v0.1.md) Phase 3) and multi-device.
 - Publish the case study: building an AI product with an AI-built design system.
 
 ## Existing POC
 
-The `film-planner` app in this repo (screenplay → scenes/shots → AI reference images) is Phase 1–2 of the original storyboard-planner plan ([plan.md](plan.md)) and becomes the seed of the **Projects/Documents** area in Phase 2 above.
+The `film-planner` app in this repo (screenplay → scenes/shots → AI reference images) is Phase 1–2 of the original storyboard-planner plan ([plan.md](plan-poc-v0.1.md)) and becomes the seed of the **Projects/Documents** area in Phase 2 above.
