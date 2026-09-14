@@ -1,12 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   Brain,
-  CopyIcon,
-  EllipsisIcon,
-  SparklesIcon,
-  Trash2Icon,
   TriangleAlert,
-  ZapIcon,
 } from 'lucide-react'
 import { expect, userEvent, within } from 'storybook/test'
 
@@ -21,8 +16,8 @@ import {
   AINodeTitle,
 } from '@/components/ai/ai-node'
 import { NodePort } from '@/components/ai/node-port'
-import { NodeMenu, NodeMenuAction, NodeMenuSeparator } from '@/components/ai/node-menu'
-import { DemoRunButton, ModelPicker } from '../shared'
+import { DemoRunButton } from '../shared'
+import { LLMNodeMenu } from '../menus'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -76,44 +71,6 @@ const promptText = 'Write a short film synopsis about a lighthouse keeper'
 const generatedText =
   'Every night the fog rolls in, and with it come the voices. Elias, the last keeper of the Wren Point light, has logged them for thirty years — names, dates, fragments of songs from ships that vanished a century ago. When a young cartographer arrives to decommission the lighthouse, Elias must decide whether to hand over his logbooks or finish the one conversation the fog never let him complete.'
 
-const LLMNodeMenu = () => (
-  <NodeMenu aria-label="LLM node settings">
-    <ModelPicker
-      heading="Language models"
-      defaultValue="gpt-5"
-      models={[
-        {
-          value: 'gpt-5',
-          name: 'GPT-5',
-          description: 'Strong general reasoning and writing.',
-          icon: <SparklesIcon />,
-        },
-        {
-          value: 'claude-sonnet-5',
-          name: 'Claude Sonnet 5',
-          description: 'Nuanced long-form writing and analysis.',
-          icon: <Brain />,
-        },
-        {
-          value: 'gemini-3-pro',
-          name: 'Gemini 3 Pro',
-          description: 'Fast, multimodal, long context.',
-          icon: <ZapIcon />,
-        },
-      ]}
-    />
-    <NodeMenuSeparator />
-    <NodeMenuAction aria-label="Duplicate">
-      <CopyIcon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="Delete">
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions">
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
-)
 
 const header = (
   <AINodeHeader>

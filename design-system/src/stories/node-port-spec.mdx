@@ -27,7 +27,7 @@ and **Avatar** ports; the other blue ports match Avatar.
 
 ## Color treatments
 
-### Text port (neutral — the only non-blue base port)
+### Text port (neutral)
 
 <table>
   <thead>
@@ -40,7 +40,7 @@ and **Avatar** ports; the other blue ports match Avatar.
   </tbody>
 </table>
 
-### Avatar port (standard blue, same as video / image / speech / 3D / frames)
+### Visual ports (blue — video, image, speech, 3D, frames)
 
 <table>
   <thead>
@@ -50,6 +50,19 @@ and **Avatar** ports; the other blue ports match Avatar.
     <tr><td>Fill</td><td><code>--color-blue-100</code></td></tr>
     <tr><td>Border</td><td><code>--color-blue-200</code></td></tr>
     <tr><td>Icon</td><td><code>--color-blue-600</code></td></tr>
+  </tbody>
+</table>
+
+### Avatar port (tan — the only one)
+
+<table>
+  <thead>
+    <tr><th>Layer</th><th>Value</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Fill</td><td><code>#DCD0BB</code> — from Figma, no token yet</td></tr>
+    <tr><td>Border</td><td><code>#CFC0A6</code></td></tr>
+    <tr><td>Icon</td><td><code>#453D31</code></td></tr>
   </tbody>
 </table>
 
@@ -66,10 +79,27 @@ and **Avatar** ports; the other blue ports match Avatar.
   </tbody>
 </table>
 
+## Port families
+
+Colour groups the ports by the kind of data they carry.
+
+<table>
+  <thead>
+    <tr><th>Family</th><th>Colour</th><th>Ports</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Visual</td><td>blue</td><td>Video, Image, Speech, 3D, Start frame, End frame</td></tr>
+    <tr><td>Audio</td><td>purple</td><td>Audio, Sound</td></tr>
+    <tr><td>Identity</td><td>tan</td><td>Avatar</td></tr>
+    <tr><td>Text</td><td>neutral</td><td>Text</td></tr>
+  </tbody>
+</table>
+
 ## Popover (name tooltip)
 
 Shown on hover above every port (`side="top"`), disable per instance with
-`tooltip={false}`.
+`tooltip={false}`. Application rules for tooltips live in
+**AI New › Cost Tooltip › Spec**.
 
 <table>
   <thead>

@@ -1,20 +1,11 @@
-import { useState } from 'react'
+import { } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Captions, DownloadIcon, EllipsisIcon, Trash2Icon } from 'lucide-react'
+import { Captions } from 'lucide-react'
 
 import { AINode, AINodeHeader, AINodeMeta, AINodePorts, AINodePreview, AINodeTitle } from '@/components/ai/ai-node'
-import {
-  NodeMenu,
-  NodeMenuAction,
-  NodeMenuSelect,
-  NodeMenuSelectContent,
-  NodeMenuSelectGroup,
-  NodeMenuSelectItem,
-  NodeMenuSelectTrigger,
-  NodeMenuSeparator,
-} from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
 import { DemoRunButton } from '../shared'
+import { DubbingNodeMenu } from '../menus'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -41,53 +32,6 @@ const runMenu = (
     <DropdownMenuItem>Run this node</DropdownMenuItem>
     <DropdownMenuItem>Run all nodes</DropdownMenuItem>
   </>
-)
-
-const languages = [
-  { value: 'Spanish', flag: '🇪🇸' },
-  { value: 'French', flag: '🇫🇷' },
-  { value: 'German', flag: '🇩🇪' },
-  { value: 'Japanese', flag: '🇯🇵' },
-  { value: 'Polish', flag: '🇵🇱' },
-]
-
-const LanguageSelect = () => {
-  const [language, setLanguage] = useState('Spanish')
-  const selected = languages.find((l) => l.value === language)
-  return (
-    <NodeMenuSelect>
-      <NodeMenuSelectTrigger aria-label="Target language" chevron>
-        <span aria-hidden="true">{selected?.flag}</span>
-        {selected?.value}
-      </NodeMenuSelectTrigger>
-      <NodeMenuSelectContent label="Target language">
-        <NodeMenuSelectGroup value={language} onValueChange={setLanguage}>
-          {languages.map((l) => (
-            <NodeMenuSelectItem key={l.value} value={l.value}>
-              <span aria-hidden="true">{l.flag}</span>
-              {l.value}
-            </NodeMenuSelectItem>
-          ))}
-        </NodeMenuSelectGroup>
-      </NodeMenuSelectContent>
-    </NodeMenuSelect>
-  )
-}
-
-const DubbingNodeMenu = () => (
-  <NodeMenu aria-label="Dubbing node settings">
-    <LanguageSelect />
-    <NodeMenuSeparator />
-    <NodeMenuAction aria-label="Download">
-      <DownloadIcon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="Delete">
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions">
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
 )
 
 const header = (

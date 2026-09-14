@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { AudioLines, AudioWaveform, DownloadIcon, EllipsisIcon, SparklesIcon, Trash2Icon, TriangleAlert } from 'lucide-react'
+import { AudioLines, AudioWaveform, TriangleAlert } from 'lucide-react'
 import { expect, userEvent, within } from 'storybook/test'
 
 import {
@@ -13,8 +13,8 @@ import {
   AINodeTitle,
 } from '@/components/ai/ai-node'
 import { NodePort } from '@/components/ai/node-port'
-import { NodeMenu, NodeMenuAction, NodeMenuSeparator } from '@/components/ai/node-menu'
-import { DemoRunButton, ModelPicker, OptionSelect } from '../shared'
+import { DemoRunButton } from '../shared'
+import { VoiceChangerNodeMenu } from '../menus'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -62,43 +62,6 @@ const emptyPreview = (
   </>
 )
 
-const VoiceChangerNodeMenu = () => (
-  <NodeMenu aria-label="Voice changer node settings">
-    <ModelPicker
-      heading="Voice models"
-      defaultValue="eleven-v3"
-      models={[
-        {
-          value: 'eleven-v3',
-          name: 'Eleven v3',
-          description: 'Most expressive voice conversion.',
-          icon: <AudioWaveform />,
-        },
-        {
-          value: 'eleven-multilingual-v2',
-          name: 'Eleven Multilingual v2',
-          description: 'Stable conversion across 29 languages.',
-          icon: <SparklesIcon />,
-        },
-      ]}
-    />
-    <OptionSelect
-      label="Voice"
-      options={['Rachel', 'Adam', 'Bella', 'Josh']}
-      defaultValue="Rachel"
-    />
-    <NodeMenuSeparator />
-    <NodeMenuAction aria-label="Download">
-      <DownloadIcon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="Delete">
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions">
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
-)
 
 const VoiceChangerNode = ({
   selected = false,

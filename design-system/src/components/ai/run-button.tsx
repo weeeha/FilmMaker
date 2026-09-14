@@ -1,12 +1,8 @@
 import * as React from "react"
-import { ChevronDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { RunMenu } from "@/components/ai/run-menu"
+import { CostTooltip } from "@/components/ai/cost-tooltip"
 import { Spinner } from "@/components/ui/spinner"
 import { cn } from "@/lib/utils"
 
@@ -15,6 +11,13 @@ export type RunButtonProps = {
   label?: string
   /** Shows a spinner and blocks interaction while a generation is running. */
   loading?: boolean
+  /** Opens the run-options menu on mount — used to document the open state. */
+  defaultMenuOpen?: boolean
+  /**
+   * Credits this run will spend. Shows a cost tooltip on hovering the primary
+   * segment: `0` reads as a free run, any other number as a charged one.
+   */
+  cost?: number
   disabled?: boolean
   onRun?: React.MouseEventHandler<HTMLButtonElement>
   /** Dropdown content (e.g. `DropdownMenuItem`s) for the chevron segment. Omit to render the main segment only. */
@@ -30,45 +33,66 @@ function RunButton({
   label = "Run",
   loading = false,
   disabled = false,
+  defaultMenuOpen = false,
+  cost,
   onRun,
   menu,
   className,
 }: RunButtonProps) {
+  const primary = (
+    <Button
+      onClick={(event) => {
+        // guards the keyboard path too — the button stays focusable while
+        // running, so `disabled` is not an option here
+        if (loading) return
+        onRun?.(event)
+      }}
+      disabled={disabled}
+      aria-disabled={loading || undefined}
+      aria-busy={loading || undefined}
+      aria-label={loading ? "Running" : undefined}
+      // sizes and colours come from the --run-button-* tokens
+      // bg-clip-border paints over the base Button's transparent border so the
+      // two segments join without a visible seam
+      // loading: the spinner overlays the (hidden) label so the segment keeps
+      // its exact size and the chevron never moves; hover is blocked while
+      // running, so the fill stays at rest
+      className={cn(
+        "relative h-(--run-button-height) gap-(--run-button-gap) rounded-run-button bg-clip-border text-(length:--run-button-label)",
+        "ps-(--run-button-padding-start) pe-(--run-button-padding-end)",
+        "bg-run-button text-run-button-foreground hover:bg-run-button-hover",
+        "disabled:opacity-(--run-button-disabled-opacity) aria-disabled:pointer-events-none",
+        menu != null && "rounded-e-none",
+      )}
+    >
+      <span className={loading ? "invisible" : undefined}>{label}</span>
+      {loading && (
+        <Spinner
+          className="absolute inset-0 m-auto size-(--run-button-icon)"
+          aria-hidden="true"
+        />
+      )}
+    </Button>
+  )
+
   return (
-    <div data-slot="run-button" className={cn("inline-flex items-center", className)}>
-      <Button
-        onClick={onRun}
-        disabled={disabled || loading}
-        aria-busy={loading}
-        aria-label={loading ? label : undefined}
-        // 13px label from Figma (no matching --text token); --radius-sm = 6px
-        // bg-clip-border paints over the base Button's transparent border so the
-        // two segments join without a visible seam
-        // loading: the spinner overlays the (hidden) label so the button keeps
-        // its exact size; the chevron segment stays
-        className={cn(
-          "relative h-8 gap-1.5 rounded-sm bg-clip-border pl-4 pr-3 text-[13px]",
-          menu != null && "rounded-r-none"
-        )}
-      >
-        <span className={loading ? "invisible" : undefined}>{label}</span>
-        {loading && (
-          <Spinner className="absolute inset-0 m-auto size-3.5" aria-hidden="true" />
-        )}
-      </Button>
+    <div
+      data-slot="run-button"
+      className={cn("inline-flex items-center", className)}
+    >
+      {cost === undefined ? (
+        primary
+      ) : (
+        <CostTooltip cost={cost}>{primary}</CostTooltip>
+      )}
       {menu != null && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label={`${label} options`}
-              disabled={disabled || loading}
-              className="h-8 w-6 rounded-sm rounded-l-none bg-clip-border p-0"
-            >
-              <ChevronDown aria-hidden="true" className="size-3.5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">{menu}</DropdownMenuContent>
-        </DropdownMenu>
+        <RunMenu
+          disabled={disabled}
+          defaultOpen={defaultMenuOpen}
+          attached
+        >
+          {menu}
+        </RunMenu>
       )}
     </div>
   )

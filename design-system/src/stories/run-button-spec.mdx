@@ -1,0 +1,607 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI New/Run Button/Spec" />
+
+# Run Button
+
+## Overview
+
+The Run Button starts the execution of the current workflow or selected run
+configuration. The component is available in two variants:
+
+- **Single** — performs one immediate Run action.
+- **Split** — provides an immediate Run action and a separate menu of related
+  run options.
+
+The Split variant is visually presented as one control but is programmatically
+composed of two independent buttons. Each segment has its own click target,
+focus, hover, pressed, and active states.
+
+---
+
+## Anatomy
+
+### Single variant
+
+1. Button container
+2. `Run` label
+3. Optional loading indicator
+
+### Split variant
+
+1. **Primary action** — starts the Run action.
+2. **Divider** — visually separates the two interactive targets.
+3. **Dropdown trigger** — opens a menu of related run options.
+4. **Chevron icon** — indicates that additional options are available.
+5. **Dropdown menu** — contains additional actions related to running the workflow.
+6. **Loading indicator** — communicates that the primary Run action is in progress.
+
+The divider is visual only and must not act as a separate interactive element.
+
+---
+
+## Sizes & spaces
+
+<table>
+  <thead>
+    <tr><th>Property</th><th>Value</th><th>Token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Height</td><td>32 px</td><td><code>--spacing(8)</code></td></tr>
+    <tr><td>Corner radius</td><td>6 px</td><td><code>--radius-sm</code></td></tr>
+    <tr><td>Primary padding</td><td>16 px left / 12 px right</td><td><code>--spacing(4)</code> / <code>--spacing(3)</code></td></tr>
+    <tr><td>Dropdown segment width</td><td>24 px, no padding</td><td><code>--spacing(6)</code></td></tr>
+    <tr><td>Label size</td><td>13 px</td><td>from Figma — no matching <code>--text</code> token</td></tr>
+    <tr><td>Icon / loader size</td><td>14 px</td><td><code>--spacing(3.5)</code></td></tr>
+    <tr><td>Gap inside primary</td><td>6 px</td><td><code>--spacing(1.5)</code></td></tr>
+  </tbody>
+</table>
+
+## Colors
+
+<table>
+  <thead>
+    <tr><th>State</th><th>Fill</th><th>Label</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Rest</td><td><code>--color-primary</code></td><td><code>--color-primary-foreground</code></td></tr>
+    <tr><td>Hover</td><td><code>--color-primary</code> @ 80% — hovered segment only</td><td><code>--color-primary-foreground</code></td></tr>
+    <tr><td>Dropdown open</td><td><code>--color-primary</code> @ 80% on the dropdown segment only</td><td>—</td></tr>
+    <tr><td>Loading (primary segment)</td><td><code>--color-primary</code> — unchanged, pointer events off</td><td>loader + label</td></tr>
+    <tr><td>Disabled</td><td><code>--color-primary</code> @ 50% opacity — both segments</td><td>inherits</td></tr>
+  </tbody>
+</table>
+
+---
+
+## Tokens
+
+Component tokens live in `src/index.css` next to the other component-scoped
+tokens (sidebar). Each one resolves to a global token — change the global and
+the button follows.
+
+<table>
+  <thead>
+    <tr><th>Token</th><th>Value</th><th>Applies to</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>--run-button</code></td><td><code>--primary</code></td><td>Rest fill, both segments</td></tr>
+    <tr><td><code>--run-button-foreground</code></td><td><code>--primary-foreground</code></td><td>Label and chevron</td></tr>
+    <tr><td><code>--run-button-hover</code></td><td><code>--primary</code> @ 80%</td><td>Hover fill, hovered segment only</td></tr>
+    <tr><td><code>--run-button-open</code></td><td><code>--run-button-hover</code></td><td>Dropdown segment while the menu is open</td></tr>
+    <tr><td><code>--run-button-disabled-opacity</code></td><td>0.5</td><td>Both segments when disabled</td></tr>
+    <tr><td><code>--run-button-height</code></td><td>2rem — 32 px</td><td>Both segments</td></tr>
+    <tr><td><code>--run-button-radius</code></td><td><code>--radius-sm</code> — 6 px</td><td>Outer corners; inner corners squared</td></tr>
+    <tr><td><code>--run-button-label</code></td><td>0.8125rem — 13 px</td><td>Label size (Figma value, no <code>--text-*</code> match)</td></tr>
+    <tr><td><code>--run-button-icon</code></td><td>0.875rem — 14 px</td><td>Chevron and loader</td></tr>
+    <tr><td><code>--run-button-gap</code></td><td>0.375rem — 6 px</td><td>Gap inside the primary segment</td></tr>
+    <tr><td><code>--run-button-padding-start</code></td><td>1rem — 16 px</td><td>Primary segment, leading edge</td></tr>
+    <tr><td><code>--run-button-padding-end</code></td><td>0.75rem — 12 px</td><td>Primary segment, trailing edge</td></tr>
+    <tr><td><code>--run-button-dropdown-width</code></td><td>1.5rem — 24 px</td><td>Dropdown segment width</td></tr>
+  </tbody>
+</table>
+
+Colour, radius and label size are also registered in `@theme`, so they can be
+used as utilities: `bg-run-button`, `text-run-button-foreground`,
+`hover:bg-run-button-hover`, `data-[state=open]:bg-run-button-open`,
+`rounded-run-button`. The remaining tokens are referenced directly, e.g.
+`h-(--run-button-height)`.
+
+## Variants
+
+<table>
+  <thead>
+    <tr><th>Variant</th><th>Use when</th><th>Behavior</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Single</td>
+      <td>There is only one available Run action.</td>
+      <td>Clicking the button immediately starts the workflow.</td>
+    </tr>
+    <tr>
+      <td>Split</td>
+      <td>A commonly used Run action is available alongside a small set of related alternatives.</td>
+      <td>The primary segment runs immediately. The secondary segment opens the menu.</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## When to use
+
+Use the **Single** variant when:
+
+- There is one clear and predictable Run action.
+- Users do not need to choose between additional run modes.
+- Additional options are unavailable or unnecessary.
+
+Use the **Split** variant when:
+
+- There is a clear default Run action.
+- The default action is the most frequently used option.
+- Users occasionally need access to additional, closely related run actions.
+- Hiding secondary actions helps reduce visual complexity.
+
+The primary segment must always represent a safe and predictable default action.
+
+---
+
+## When not to use
+
+Do not use the Split variant when:
+
+- Users must select an option before every run.
+- There is no meaningful default action.
+- The menu contains unrelated actions.
+- The menu contains complex settings, form fields, or configuration controls.
+- The list of options is long or requires explanation.
+- Clicking Run could produce an unexpected result because the current
+  configuration is unclear.
+
+If users must select a value before running, use a separate Select, Combobox,
+Popover, or configuration panel followed by a Single Run Button.
+
+If the dropdown contains complex interactive content, use a Popover or Dialog
+instead of a menu.
+
+---
+
+## Interaction behavior
+
+### Single variant
+
+- Clicking Run immediately starts the workflow.
+- `Enter` or `Space` activates the button when it has keyboard focus.
+- The button does not open a menu.
+- Focus normally remains on the button after activation unless the action moves
+  the user into a new context.
+
+### Split variant
+
+The Split variant contains two independent interactive elements.
+
+#### Primary Run action
+
+- Clicking Run immediately starts the default Run action.
+- It must not open or toggle the dropdown menu.
+- It must not inherit the open state from the dropdown trigger.
+
+#### Dropdown trigger
+
+- Clicking the dropdown trigger opens or closes the menu.
+- It must not start the Run action.
+- When the menu is open, only the dropdown trigger receives the persistent
+  `Dropdown Open` styling.
+- The primary Run segment remains in its default or loading state.
+- The open styling remains visible after the pointer leaves the trigger and
+  until the menu closes.
+
+The menu closes when:
+
+- The user selects a menu item.
+- The user activates the dropdown trigger again.
+- The user presses `Escape`.
+- The user clicks outside the menu.
+
+When the menu is closed with `Escape`, focus returns to the dropdown trigger.
+
+---
+
+## Cost tooltip
+
+Hovering the Run segment can explain what the run will spend. Pass `cost` and
+the tooltip appears above the segment; omit it and there is no tooltip.
+
+<table>
+  <thead>
+    <tr><th>Type</th><th>Prop</th><th>Text</th><th>Use when</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Free run</td>
+      <td><code>cost=&#123;0&#125;</code></td>
+      <td>This run will cost 0 credits</td>
+      <td>Nothing is charged — a cached result, a free tier, or a node that costs nothing to re-run.</td>
+    </tr>
+    <tr>
+      <td>Charged run</td>
+      <td><code>cost=&#123;2950&#125;</code></td>
+      <td>This run will cost 2,950 credits</td>
+      <td>The run spends credits. Thousands are grouped; `1` reads as "1 credit".</td>
+    </tr>
+  </tbody>
+</table>
+
+See **AI New › Cost Tooltip › Spec** for the tooltip's own rules and for how
+tooltips are applied across the system.
+
+Rules:
+
+- The tooltip belongs to the primary segment only. Hovering the dropdown
+  trigger never shows it.
+- It uses the shared Tooltip component — `--color-foreground` fill,
+  `--text-xs` label, positioned `side="top"`.
+- The cost is stated, never implied: do not replace the number with words such
+  as "free" or "some credits".
+- Keep the tooltip informational. It must not be the only place the price is
+  shown before an expensive run.
+
+---
+
+## Component states
+
+<table>
+  <thead>
+    <tr><th>State</th><th>Primary Run segment</th><th>Dropdown segment</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Default</td><td>Default styling</td><td>Default styling</td></tr>
+    <tr><td>Run Hover</td><td>Hover styling</td><td>Remains default</td></tr>
+    <tr><td>Dropdown Hover</td><td>Remains default</td><td>Hover styling</td></tr>
+    <tr><td>Run Pressed</td><td>Pressed styling</td><td>Remains default</td></tr>
+    <tr><td>Dropdown Pressed</td><td>Remains default</td><td>Pressed styling</td></tr>
+    <tr><td>Run Focus</td><td>Visible focus indicator</td><td>No focus indicator</td></tr>
+    <tr><td>Dropdown Focus</td><td>No focus indicator</td><td>Visible focus indicator</td></tr>
+    <tr><td>Dropdown Open</td><td>Remains default</td><td>Persistent open/active styling</td></tr>
+    <tr><td>Loading</td><td>One centered loader, no visible label</td><td>Remains enabled and interactive</td></tr>
+    <tr><td>Loading + Dropdown Open</td><td>One centered loader, no visible label</td><td>Open styling with visible menu</td></tr>
+    <tr><td>Disabled</td><td>Disabled</td><td>Disabled</td></tr>
+  </tbody>
+</table>
+
+### State rules
+
+- Hover, pressed, focus, open, and loading states must not be applied to the
+  shared wrapper.
+- Each segment controls its own interactive states.
+- `Dropdown Open` persists until the menu closes.
+- Loading applies only to the primary segment.
+- Disabled applies to the complete component and overrides all other states.
+- Loading and Dropdown Open may exist at the same time.
+
+---
+
+## Loading behavior
+
+When a Run action is in progress:
+
+- Replace the `Run` label with one centered loader. No visible loading text.
+- Keep the label in the DOM but hidden, so the segment keeps its exact width and
+  the dropdown segment never moves.
+- Apply the loading appearance only to the primary Run segment.
+- Prevent the primary segment from accidentally starting a duplicate run unless
+  concurrent runs are intentionally supported.
+- Keep the dropdown trigger enabled and fully interactive.
+- Do not apply loading opacity or disabled styling to the shared wrapper.
+- Do not disable the dropdown because the primary action is running.
+
+When the process completes or fails, return the primary segment to its default
+state and communicate the result outside the button through the appropriate
+success or error feedback.
+
+---
+
+## Disabled behavior
+
+When the complete Run Button is disabled:
+
+- Disable both the primary Run action and the dropdown trigger.
+- Neither segment responds to pointer or keyboard activation.
+- The dropdown menu cannot be opened.
+- The component does not receive keyboard focus when native `disabled`
+  attributes are used.
+- Disabled styling applies consistently to both segments.
+
+Loading and Disabled are different states. A loading primary action must not
+make the enabled dropdown trigger appear disabled.
+
+---
+
+## Content guidelines
+
+### Labels
+
+Use:
+
+- `Run` for the default state.
+- `Running` as the accessible name while loading — the loader replaces the
+  visible label, so the name comes from `aria-label`.
+- `Open run options` as the accessible name of the icon-only dropdown trigger.
+
+Keep labels:
+
+- Short and action-oriented.
+- Written in sentence case.
+- Consistent across the product.
+- Clear without relying on surrounding content.
+
+Do not use:
+
+- `Click here`
+- `Submit` when the actual action is Run
+- Ambiguous labels such as `More`
+- A chevron without an accessible name
+
+Do not add an ellipsis to `Run` — clicking it immediately starts the action, and
+the loading state shows a loader rather than a text label.
+
+---
+
+## Do and Don't
+
+<table>
+  <thead>
+    <tr><th>Do</th><th>Don't</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Use Single when only one action is available.</td><td>Add a dropdown with no meaningful additional actions.</td></tr>
+    <tr><td>Use Split for one frequent default action and a few related alternatives.</td><td>Group unrelated actions inside the Run menu.</td></tr>
+    <tr><td>Implement the Split variant as two native buttons.</td><td>Implement the entire component as one button with two visual areas.</td></tr>
+    <tr><td>Give each segment an independent click target.</td><td>Make the chevron and Run label trigger the same action.</td></tr>
+    <tr><td>Apply hover and pressed states only to the segment being used.</td><td>Apply hover styling to the complete wrapper.</td></tr>
+    <tr><td>Apply Dropdown Open styling only to the dropdown trigger.</td><td>Make both segments appear selected when the menu is open.</td></tr>
+    <tr><td>Show one centered loader on the primary segment and keep its accessible name.</td><td>Let the segment resize, or leave the loader without an accessible name.</td></tr>
+    <tr><td>Keep the dropdown available during loading.</td><td>Disable the entire Split button while Run is loading.</td></tr>
+    <tr><td>Use a clear, predictable default Run action.</td><td>Hide required setup or a required choice inside the menu.</td></tr>
+    <tr><td>Keep menu options short and closely related.</td><td>Use the menu for complex settings or forms.</td></tr>
+  </tbody>
+</table>
+
+---
+
+## Accessibility
+
+### Semantic structure
+
+Use native HTML buttons for both interactive segments:
+
+- Primary action: `<button type="button">`
+- Dropdown trigger: `<button type="button">`
+
+Do not give the shared wrapper `role="button"`.
+
+The wrapper may use `role="group"` with an accessible label such as
+`Run controls` when the relationship between the two buttons is not otherwise
+clear.
+
+### Accessible names
+
+The primary button receives its accessible name from the visible `Run` label.
+While loading the label is hidden and the name comes from `aria-label="Running"`.
+
+The icon-only dropdown trigger must have an explicit accessible name:
+
+```html
+aria-label="Open run options"
+```
+
+The chevron icon inside the trigger is decorative and should be hidden from
+assistive technologies:
+
+```html
+aria-hidden="true"
+```
+
+Expected screen-reader announcements include:
+
+- `Run, button`
+- `Running, button, busy`
+- `Open run options, menu button, collapsed`
+- `Open run options, menu button, expanded`
+
+### Dropdown attributes
+
+Apply the following attributes only to the dropdown trigger:
+
+```html
+aria-haspopup="menu"
+aria-expanded="false"
+```
+
+When the menu is open:
+
+```html
+aria-expanded="true"
+```
+
+`aria-controls` may reference the menu ID when a stable relationship is
+available.
+
+Do not use `aria-pressed` to communicate the open state. `aria-expanded` is the
+correct property for a button that opens and closes a menu.
+
+If the dropdown contains a list of commands:
+
+- The menu container uses `role="menu"`.
+- Each actionable option uses `role="menuitem"`.
+- The menu has an accessible name or is associated with the dropdown trigger.
+
+If the dropdown contains form controls or complex content, do not use
+`role="menu"`. Use a Popover or Dialog with native controls instead.
+
+### Loading announcements
+
+During loading:
+
+- Set `aria-busy="true"` on the primary button or the related execution region.
+- Hide the decorative loader from the accessibility tree.
+- Use one polite status mechanism, such as `role="status"`, to announce
+  meaningful changes such as `Run started`, `Run completed`, or `Run failed`.
+- Avoid announcing the same loading message through multiple live regions.
+- Keep keyboard focus stable when the button enters the loading state.
+
+If the primary action cannot be activated again while loading, expose it as
+unavailable and suppress additional activation without disabling the dropdown
+trigger.
+
+### Disabled semantics
+
+When the entire component is disabled, apply the native `disabled` attribute to
+both buttons.
+
+If `aria-disabled="true"` is used instead, the implementation must manually
+prevent pointer and keyboard activation because ARIA does not disable behavior
+by itself.
+
+### Keyboard interaction
+
+<table>
+  <thead>
+    <tr><th>Key</th><th>Focus location</th><th>Result</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Tab</code></td><td>Before the component</td><td>Moves focus to the primary Run button</td></tr>
+    <tr><td><code>Tab</code></td><td>Primary Run button</td><td>Moves focus to the dropdown trigger</td></tr>
+    <tr><td><code>Shift + Tab</code></td><td>Dropdown trigger</td><td>Moves focus back to the primary Run button</td></tr>
+    <tr><td><code>Enter</code> or <code>Space</code></td><td>Primary Run button</td><td>Starts the Run action</td></tr>
+    <tr><td><code>Enter</code> or <code>Space</code></td><td>Dropdown trigger</td><td>Opens the menu and moves focus to the first item</td></tr>
+    <tr><td><code>Arrow Down</code></td><td>Dropdown trigger</td><td>Optionally opens the menu and focuses the first item</td></tr>
+    <tr><td><code>Arrow Up</code></td><td>Dropdown trigger</td><td>Optionally opens the menu and focuses the last item</td></tr>
+    <tr><td><code>Arrow Down</code></td><td>Menu item</td><td>Moves focus to the next item</td></tr>
+    <tr><td><code>Arrow Up</code></td><td>Menu item</td><td>Moves focus to the previous item</td></tr>
+    <tr><td><code>Home</code></td><td>Menu item</td><td>Moves focus to the first item</td></tr>
+    <tr><td><code>End</code></td><td>Menu item</td><td>Moves focus to the last item</td></tr>
+    <tr><td><code>Enter</code> or <code>Space</code></td><td>Menu item</td><td>Activates the item and closes the menu</td></tr>
+    <tr><td><code>Escape</code></td><td>Menu item</td><td>Closes the menu and returns focus to the dropdown trigger</td></tr>
+    <tr><td><code>Tab</code></td><td>Menu item</td><td>Closes the menu and moves focus to the next focusable element</td></tr>
+  </tbody>
+</table>
+
+Focus must never move between the primary button and dropdown trigger using
+arrow keys while the menu is closed. They are separate buttons in the normal Tab
+order.
+
+### Focus appearance
+
+- Each segment must have its own visible focus indicator.
+- The focus indicator must identify which segment currently has focus.
+- Do not apply one focus ring around the complete Split button.
+- Do not remove the browser focus indicator unless it is replaced with an
+  accessible custom indicator.
+- Ensure the wrapper does not clip the focus ring.
+- Opening the menu must require activation; receiving focus alone must not open
+  it.
+
+### Contrast
+
+- Button text must have a contrast ratio of at least `4.5:1` against its
+  background.
+- The chevron, meaningful boundaries, open-state indicators, and custom focus
+  indicators must have at least `3:1` contrast against adjacent colors.
+- Hover or open styling must not reduce the contrast of the label or icon.
+- Disabled controls are exempt from WCAG contrast requirements, but they should
+  remain identifiable whenever possible.
+
+### Target size
+
+- Each button segment is a separate pointer target.
+- Each segment must provide a target area of at least `24 × 24 CSS pixels`.
+- For touch-first interfaces, aim for a target area of approximately `44 × 44`
+  or `48 × 48` pixels.
+- The visual divider must not reduce the interactive target size.
+
+---
+
+## Responsive behavior
+
+- Keep the primary and dropdown segments attached at every viewport size.
+- Do not allow the two segments to wrap onto separate lines.
+- Preserve the minimum target size for each segment.
+- Keep the menu within the viewport and reposition it when there is insufficient
+  space.
+- Mirror segment placement, border radii, and menu alignment for right-to-left
+  layouts.
+
+---
+
+## Storybook requirements
+
+Document and test the following stories:
+
+### Single
+
+- Default
+- Hover
+- Pressed
+- Focus
+- Loading
+- Disabled
+
+### Split
+
+- Default
+- Run Hover
+- Dropdown Hover
+- Run Pressed
+- Dropdown Pressed
+- Run Focus
+- Dropdown Focus
+- Dropdown Open
+- Loading
+- Loading with Dropdown Open
+- Disabled
+
+The Dropdown Open story must use the component's real controlled open state. Do
+not reproduce the state only by applying static visual classes.
+
+Include interaction tests that verify:
+
+- Run and Dropdown have different click handlers.
+- Run does not open the menu.
+- Dropdown does not execute Run.
+- `aria-expanded` changes when the menu opens and closes.
+- Focus moves into the menu when it opens.
+- `Escape` closes the menu and restores focus.
+- The dropdown remains operable during loading.
+- Both segments are unavailable when the component is disabled.
+- No accessibility violations are reported by Storybook accessibility checks.
+
+---
+
+## Acceptance criteria
+
+The component is complete when:
+
+- Single and Split variants have clearly defined use cases.
+- The Split variant uses two independent native buttons.
+- Each segment has an independent interactive state.
+- Dropdown Open styling affects only the dropdown trigger.
+- Loading affects only the primary Run segment.
+- The loader replaces the label without resizing the segment, and the button keeps an accessible name.
+- The dropdown remains enabled during loading.
+- Disabled affects both segments.
+- Both segments can be reached and operated with a keyboard.
+- Accessible names, roles, values, and expanded states are correctly exposed.
+- Focus remains visible and is never clipped.
+- The component meets WCAG 2.2 AA contrast and target-size requirements.
+
+## References
+
+- [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
+- [WAI-ARIA Menu Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/)
+- [WAI-ARIA Menu and Menubar Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/)
+- [WCAG 2.2: Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [WCAG 2.2: Target Size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+- [WCAG 2.2: Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)

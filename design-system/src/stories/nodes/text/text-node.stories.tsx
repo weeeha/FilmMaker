@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { CopyIcon, EllipsisIcon, Trash2Icon, TypeIcon } from 'lucide-react'
+import { TypeIcon } from 'lucide-react'
 
 import { AINode, AINodeHeader, AINodePorts, AINodeTitle } from '@/components/ai/ai-node'
-import { NodeMenu, NodeMenuAction } from '@/components/ai/node-menu'
 import { NodePort } from '@/components/ai/node-port'
+import { TextNodeMenu } from '../menus'
 
 const meta = {
   title: 'AI New/Node Cards/Text/States',
@@ -29,19 +29,6 @@ const outputPort = (
   </AINodePorts>
 )
 
-const TextNodeMenu = ({ disabled = false }: { disabled?: boolean }) => (
-  <NodeMenu aria-label="Text node actions">
-    <NodeMenuAction aria-label="Duplicate" disabled={disabled}>
-      <CopyIcon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="Delete" disabled={disabled}>
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions" disabled={disabled}>
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
-)
 
 const TextNode = ({
   selected = false,
@@ -105,8 +92,4 @@ export const SelectedFilled: Story = {
       defaultValue="A lone lighthouse keeper discovers the fog rolling in every night carries whispered voices from ships that vanished a century ago."
     />
   ),
-}
-
-export const Disabled: Story = {
-  render: () => <TextNode disabled />,
 }

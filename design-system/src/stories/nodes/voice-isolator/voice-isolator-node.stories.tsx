@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DownloadIcon, Ear, EllipsisIcon, Trash2Icon } from 'lucide-react'
+import { Ear } from 'lucide-react'
 
 import {
   AINode,
@@ -13,7 +13,7 @@ import {
 } from '@/components/ai/ai-node'
 import { NodePort } from '@/components/ai/node-port'
 import { DemoRunButton } from '../shared'
-import { NodeMenu, NodeMenuAction } from '@/components/ai/node-menu'
+import { VoiceIsolatorNodeMenu } from '../menus'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -61,19 +61,6 @@ const emptyPreview = (
   </>
 )
 
-const VoiceIsolatorNodeMenu = () => (
-  <NodeMenu aria-label="Voice isolator node actions">
-    <NodeMenuAction aria-label="Download">
-      <DownloadIcon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="Delete">
-      <Trash2Icon />
-    </NodeMenuAction>
-    <NodeMenuAction aria-label="More actions">
-      <EllipsisIcon />
-    </NodeMenuAction>
-  </NodeMenu>
-)
 
 export const Default: Story = {
   render: () => (

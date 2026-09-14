@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { NodePort, type NodePortType } from '@/components/ai/node-port'
 
 const meta = {
-  title: 'AI New/Node Port',
+  title: 'AI New/Node Port/States',
   component: NodePort,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

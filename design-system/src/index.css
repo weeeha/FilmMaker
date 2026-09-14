@@ -8,6 +8,12 @@
 @theme inline {
     --font-heading: var(--font-sans);
     --font-sans: 'Geist Variable', sans-serif;
+    --color-run-button: var(--run-button);
+    --color-run-button-foreground: var(--run-button-foreground);
+    --color-run-button-hover: var(--run-button-hover);
+    --color-run-button-open: var(--run-button-open);
+    --radius-run-button: var(--run-button-radius);
+    --text-run-button: var(--run-button-label);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -81,6 +87,22 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+
+    /* Run Button — component tokens (Figma: "RunButton") */
+    --run-button: var(--primary);
+    --run-button-foreground: var(--primary-foreground);
+    /* hover / open share one fill: the primary at 80% */
+    --run-button-hover: color-mix(in oklab, var(--primary) 80%, transparent);
+    --run-button-open: var(--run-button-hover);
+    --run-button-disabled-opacity: 0.5;
+    --run-button-height: 2rem; /* 32px */
+    --run-button-radius: calc(var(--radius) * 0.6); /* = --radius-sm */
+    --run-button-label: 0.8125rem; /* 13px — Figma value, no --text-* match */
+    --run-button-icon: 0.875rem; /* 14px */
+    --run-button-gap: 0.375rem; /* 6px */
+    --run-button-padding-start: 1rem; /* 16px */
+    --run-button-padding-end: 0.75rem; /* 12px */
+    --run-button-dropdown-width: 1.5rem; /* 24px */
 }
 
 .dark {
