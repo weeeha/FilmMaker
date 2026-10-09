@@ -24,7 +24,7 @@ Write a film as a world of linked objects (locations, cast, scenes, shots) with 
 
 ## Current state
 
-- **`design-system/`** (this repo) is Alena's active project: 60 shadcn/ui primitives, AI Elements, a `components/ai` node shell (AINode, NodePort, RunButton, NodeMenu), nine `super-ai` chat and settings primitives, and 13 node types under `src/stories/nodes/` (avatar, composition, dubbing, image-generation, lip-sync, llm, music, sound-effects, speech, text, video-generation, voice-changer, voice-isolator), each with stories, spec and doc pages. Commit `72c817e` (2026-09-13, adds RunMenu, CostTooltip, node menus, a run-button spec, and a `/playground/nodes` page) is unmerged into this branch.
+- **`design-system/`** (this repo) is Alena's active project: 60 shadcn/ui primitives, AI Elements, a `components/ai` node shell (AINode, NodePort, RunButton, NodeMenu), nine `super-ai` chat and settings primitives, and 13 node types under `src/stories/nodes/` (avatar, composition, dubbing, image-generation, lip-sync, llm, music, sound-effects, speech, text, video-generation, voice-changer, voice-isolator), each with stories and a spec page. Commit `72c817e` (2026-09-13, adds RunMenu, CostTooltip, node menus, a run-button spec, and a `/playground/nodes` page in `film-planner/`; it also replaced the per-node doc pages with the spec pages) is merged into `main` (PR #6).
 - **`film-planner/`** here is the frozen v0.1 POC from April 2026 (paste a screenplay, extract scenes and shots, generate one reference image per shot, localStorage persistence). `docs/roadmap.md` Phase 0 recommends deleting it: the live app is Repo B, not this folder.
 - **Film Writer, in `weeeha/Film-Planner-`** (local folder `Film Writer and Planner`) is the live app, not a foundation in progress. 22 PRs merged to `main` between 2026-07-21 and 2026-09-04 (last: PR #25, "3D model viewer"). It runs local-first on embedded PGlite with opt-in hosted seams for Neon, Vercel Blob and Clerk; 13 tables per its own README; 58 test files and 38 Storybook stories; its own design tokens on Radix primitives and Phosphor duotone icons, separate from this repo's design-system. Built and wired: films list and creation, the app shell, collections in five list views (table, gallery, masonry, sequence, map), View Record with mentions and backlinks, images with lightbox, a 3D model viewer, search, capture inbox, and Generate image. Built and tested but not wired to a route: the scene board, shot view, and the 3D stage. Absent: Generate text, an approval state on images, flows or node canvas, and export.
 
@@ -70,7 +70,7 @@ Nothing external is required: no database server, no auth provider, no keys. PGl
 
 - `film-planner/` in this repo has no `.env.example` (`.gitignore` matches `.env*` with no negation) and no tests.
 - No CI for the app packages in this repo; the existing CI only builds and deploys Storybook.
-- Stale branches to merge or close in this repo: `origin/design-system` (tip `72c817e`, unmerged), `origin/remove-film-planner`, `origin/claude/add-claude-documentation-sPdvu`.
+- Stale branches to merge or close in this repo: `origin/design-system` (tip `72c817e`, already merged into `main`, so it can be deleted), `origin/remove-film-planner`, `origin/claude/add-claude-documentation-sPdvu`.
 - On 2026-09-13 an automated review moved the checkout of `weeeha/Film-Planner-` from `claude/project-rulebook` to `main`. No tracked files were changed. Nick may want to switch it back.
 
 ## Contributors
