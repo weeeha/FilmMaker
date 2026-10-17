@@ -2,6 +2,8 @@
 
 Status: draft for Nick's review, 2026-09-13. Proposed unless marked Decided.
 
+![Storyboard page of the frozen film-planner proof of concept: style notes, screenplay import box and two demo scenes with empty shot frames](docs/screenshots/storyboard-project.webp)
+
 ## TL;DR
 
 One product, three zones, is Proposed (decision 15) and awaiting Nick's confirmation: **Write** (world, cast, script as data-driven objects), **Produce** (node-flow generation scoped to a shot), and **Edit** (a read-only timeline of approved clips first, a light editor later), under a Home that shows progress and next actions. Two things are still Open: whether this is one product or two and where the flow components live (decision 16, recommendation A: one product, Film Writer is the app), and the product name itself (decision 17: this repo says FilmMaker, the live app says Film Writer). This repo holds Alena's node-flow design system, the docs, and a frozen proof of concept. The live app is Repo B, `weeeha/Film-Planner-`. See `docs/roadmap.md` for the plan and `docs/decisions.md` for what is decided versus proposed.
@@ -9,6 +11,22 @@ One product, three zones, is Proposed (decision 15) and awaiting Nick's confirma
 ## Product
 
 Write a film as a world of linked objects (locations, cast, scenes, shots) with `[[wiki links]]` and backlinks. Open a generation flow from a shot, pre-seeded from that object graph (an avatar node per linked character, reference images from linked objects, the film's style note in every prompt), so nothing is typed twice. Approve what a flow produces, then assemble approved clips into a cut. Cost is shown before and after every generation run.
+
+## Screenshots
+
+Both images come from a local run of the frozen `film-planner/` POC in this repo, with invented demo data and no API keys. They show code that exists today. The Write, Produce, Edit and Home zones described above are Proposed and are not built in this repo: `film-planner/src/app` holds only a project list (`/`), a project page (`/projects/[id]`), two API routes and a node playground (`/playground/nodes`).
+
+![Node playground at /playground/nodes: a video node and an image node with a toolbar, a static UI prototype](docs/screenshots/node-flow-playground.webp)
+
+`/playground/nodes` is a static UI prototype of node cards (video and image) from the design work, with no generation behind it. The storyboard image at the top is `/projects/[id]` with a demo project loaded into browser localStorage. Extracting scenes and generating frames call the AI routes and need a gateway key, so those results are not shown.
+
+To reproduce:
+
+```bash
+cd film-planner
+npm install
+npm run dev          # http://localhost:3000
+```
 
 ## Documentation
 
