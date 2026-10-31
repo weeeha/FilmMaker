@@ -1,5 +1,13 @@
 # FilmMaker
 
+**Problem.** Making a film with AI means jumping between disconnected tools: scripts in documents, each kind of generation in its own service, results assembled somewhere else. A usable five-second clip can take 10 to 80 attempts, so cost is unpredictable too.
+
+**Idea.** Still a proposal: one product with three zones, Write, Produce and Edit. A shot opens a generation flow pre-seeded from the film's linked characters and locations, and cost shows before and after every run.
+
+**Built.** This repo holds a node-flow design system in Storybook (13 node types), the product docs and a frozen v0.1 proof of concept (paste a screenplay, extract scenes and shots, generate one reference image per shot). The live app is in a separate repo, weeeha/Film-Planner-. 24 commits on 15 days, Apr 25 to Oct 25, 2026.
+
+**Decision.** Navigation is organized by film artifacts (scene, shot), with generation attached to what is missing, such as a scene without a character image. Top-level tool verbs like "Generate video" were rejected because the product should feel like making a film.
+
 Status: draft for Nick's review, 2026-09-13. Proposed unless marked Decided.
 
 ![Storyboard page of the frozen film-planner proof of concept: style notes, screenplay import box and two demo scenes with empty shot frames](docs/screenshots/storyboard-project.webp)
